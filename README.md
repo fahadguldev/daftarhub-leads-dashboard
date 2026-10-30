@@ -5,7 +5,7 @@ A lightweight, modern dashboard interface and Google Apps Script integration for
 ## Overview
 
 This project provides:
-- **`daftarhub-dashboard.html`**: A responsive, standalone single-page dashboard featuring search, status filters (Fit, Contacted, Follow-ups), direct communication shortcuts (WhatsApp, Email, Phone, Social Profiles), and real-time synchronization with Google Sheets.
+- **`index.html`**: A responsive, standalone single-page dashboard featuring search, status filters (Fit, Contacted, Follow-ups), direct communication shortcuts (WhatsApp, Email, Phone, Social Profiles), and real-time synchronization with Google Sheets.
 - **`Code.gs`**: A Google Apps Script endpoint (`doGet` and `doPost`) deployed as a Web App to interface securely between the dashboard and your Google Sheets database.
 - **Reference Docs**: Architectural and CRM comparison references.
 
@@ -26,13 +26,13 @@ This project provides:
 7. Click **Deploy**, authorize permissions when prompted, and copy the generated **Web App URL**.
 
 ### 2. Connect Dashboard
-1. Open [`daftarhub-dashboard.html`](./daftarhub-dashboard.html) locally or visit your deployed Vercel URL.
+1. Open [`index.html`](./index.html) locally or visit your deployed Vercel URL.
 2. Enter your deployed Google Apps Script Web App URL into the configuration/API prompt.
 3. Your leads will load automatically from the Google Sheet, enabling live status updates and follow-up tracking.
 
 ### 3. Vercel Deployment
 This repository includes a [`vercel.json`](./vercel.json) configuration:
-- Automatically routes `/` and `/dashboard` directly to [`daftarhub-dashboard.html`](./daftarhub-dashboard.html).
+- Automatically routes all incoming requests directly to [`index.html`](./index.html).
 - Enables clean URLs and standard security headers.
 - To deploy, connect this GitHub repository in the Vercel dashboard and deploy with zero additional build configuration needed.
 

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-[#0B0C0E] text-zinc-100 antialiased selection:bg-indigo-500 selection:text-white">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DaftarHub — Sales & Outreach CRM</title>
+  <title>DaftarHub — Sales & Omnichannel Outreach CRM</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -13,18 +15,26 @@
         extend: {
           colors: {
             brand: {
-              50: '#eef2ff',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
+              50: '#EEF2FF',
+              400: '#818CF8',
+              500: '#6366F1',
+              600: '#4F46E5',
+              700: '#4338CA',
             },
-            dark: {
-              950: '#070a12',
-              900: '#0c1120',
-              850: '#11182c',
-              800: '#172038',
-              700: '#233054',
+            zinc: {
+              950: '#0B0C0E',
+              900: '#121316',
+              850: '#16181C',
+              800: '#1F2127',
+              750: '#282B33',
+              700: '#323640',
+              600: '#525866',
+              400: '#8A91A0',
+              300: '#C1C7D0',
             }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
           }
         }
       }
@@ -32,230 +42,645 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0c1120; }
-    ::-webkit-scrollbar-thumb { background: #233054; border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: #374b80; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: #0B0C0E; }
+    ::-webkit-scrollbar-thumb { background: #1F2127; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #323640; }
+    
+    .linear-card {
+      background: #121316;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+    }
+    .linear-card:hover {
+      border-color: rgba(255, 255, 255, 0.14);
+      background: #16181C;
+    }
+    .kanban-col-dragover {
+      background-color: rgba(99, 102, 241, 0.05) !important;
+      border-color: rgba(99, 102, 241, 0.4) !important;
+    }
+    .kanban-card.dragging {
+      opacity: 0.35;
+      transform: scale(0.97);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 1rem;
+    }
+    .channel-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.35rem;
+      border-radius: 0.5rem;
+      transition: all 0.15s ease;
+      font-size: 0.72rem;
+      font-weight: 600;
+      gap: 0.35rem;
+    }
   </style>
 </head>
-<body class="bg-[#080c18] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+<body class="h-full flex overflow-hidden antialiased">
 
-  <!-- TOP HEADER -->
-  <header class="border-b border-slate-800/80 bg-[#0c1120]/90 backdrop-blur sticky top-0 z-40 px-6 py-3.5 flex items-center justify-between">
-    <div class="flex items-center gap-3.5">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/25 font-black text-xl text-white">
-        D
-      </div>
-      <div>
-        <div class="flex items-center gap-2">
-          <h1 class="font-bold text-lg text-white tracking-tight">DaftarHub</h1>
-          <span class="text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Outreach CRM</span>
+  <!-- ==================== SIDEBAR ==================== -->
+  <aside class="w-64 bg-zinc-900 border-r border-white/[0.06] flex flex-col justify-between shrink-0 select-none z-30">
+    
+    <div class="p-4 space-y-6">
+      
+      <!-- Brand Area -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-indigo-400 flex items-center justify-center shadow-lg shadow-indigo-600/30 text-white font-black text-sm">
+            D
+          </div>
+          <div>
+            <div class="font-bold text-xs tracking-tight text-white flex items-center gap-1.5">
+              <span>DaftarHub</span>
+              <span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.2 rounded bg-indigo-500/15 text-indigo-400 border border-indigo-500/20">CRM</span>
+            </div>
+            <div class="text-[11px] text-zinc-400">Omnichannel Outreach</div>
+          </div>
         </div>
-        <p class="text-xs text-slate-400">Daily Lead Pipeline & Automated Follow-Up Tracker</p>
+
+        <button onclick="toggleCommandPalette()" title="Command Palette (Ctrl+K)" class="p-1.5 rounded-lg bg-zinc-800/60 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-white/[0.04] transition text-[11px] font-mono flex items-center gap-1">
+          <span>⌘K</span>
+        </button>
       </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="space-y-1 text-xs font-semibold">
+        <button onclick="switchView('board')" id="navBoard" class="nav-btn w-full flex items-center justify-between px-3 py-2 rounded-xl text-white bg-indigo-600/90 shadow-sm transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="kanban" class="w-3.5 h-3.5"></i>
+            <span>Pipeline Board</span>
+          </div>
+          <span id="badgeBoardTotal" class="text-[10px] bg-indigo-950/80 text-indigo-200 px-1.5 py-0.5 rounded-full font-bold tabular-nums">2</span>
+        </button>
+
+        <button onclick="switchView('table')" id="navTable" class="nav-btn w-full flex items-center justify-between px-3 py-2 rounded-xl text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50 transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="table" class="w-3.5 h-3.5"></i>
+            <span>All Leads Table</span>
+          </div>
+          <span id="badgeTableTotal" class="text-[10px] bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded-full font-bold tabular-nums">2</span>
+        </button>
+
+        <button onclick="filterByPreset('action_today')" id="navActionToday" class="nav-btn w-full flex items-center justify-between px-3 py-2 rounded-xl text-amber-300 hover:bg-amber-500/10 transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>Action Required Today</span>
+          </div>
+          <span id="badgeActionToday" class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-1.5 py-0.5 rounded-full font-bold tabular-nums">2</span>
+        </button>
+      </nav>
+
+      <!-- Channels Summary Indicator -->
+      <div class="pt-4 border-t border-white/[0.06] space-y-2">
+        <div class="px-1 text-[10px] font-bold uppercase tracking-wider text-zinc-400">Available Channels</div>
+        <div class="grid grid-cols-4 gap-1.5 text-center text-[10px] font-medium text-zinc-300">
+          <div class="p-1.5 rounded-lg bg-zinc-950 border border-white/[0.04] flex flex-col items-center gap-1">
+            <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>WhatsApp</span>
+          </div>
+          <div class="p-1.5 rounded-lg bg-zinc-950 border border-white/[0.04] flex flex-col items-center gap-1">
+            <i data-lucide="mail" class="w-3.5 h-3.5 text-sky-400"></i>
+            <span>Email</span>
+          </div>
+          <div class="p-1.5 rounded-lg bg-zinc-950 border border-white/[0.04] flex flex-col items-center gap-1">
+            <i data-lucide="linkedin" class="w-3.5 h-3.5 text-blue-400"></i>
+            <span>LinkedIn</span>
+          </div>
+          <div class="p-1.5 rounded-lg bg-zinc-950 border border-white/[0.04] flex flex-col items-center gap-1">
+            <i data-lucide="instagram" class="w-3.5 h-3.5 text-pink-400"></i>
+            <span>Insta</span>
+          </div>
+          <div class="p-1.5 rounded-lg bg-zinc-950 border border-white/[0.04] flex flex-col items-center gap-1">
+            <i data-lucide="facebook" class="w-3.5 h-3.5 text-blue-500"></i>
+            <span>FB</span>
+          </div>
+          <div class="p-1.5 rounded-lg bg-zinc-950 border border-white/[0.04] flex flex-col items-center gap-1">
+            <i data-lucide="phone" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>Phone</span>
+          </div>
+          <div class="p-1.5 rounded-lg bg-zinc-950 border border-white/[0.04] flex flex-col items-center gap-1">
+            <i data-lucide="globe" class="w-3.5 h-3.5 text-indigo-400"></i>
+            <span>Web</span>
+          </div>
+          <div class="p-1.5 rounded-lg bg-zinc-950 border border-white/[0.04] flex flex-col items-center gap-1">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-rose-400"></i>
+            <span>Maps</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stages Distribution -->
+      <div class="pt-3 border-t border-white/[0.06] space-y-1 text-xs">
+        <button onclick="filterByPreset('uncontacted')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition">
+          <span class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-zinc-400"></span>
+            <span>1. New Leads</span>
+          </span>
+          <span id="countStageNew" class="text-[11px] font-bold text-zinc-400 tabular-nums">2</span>
+        </button>
+
+        <button onclick="filterByPreset('contacted')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition">
+          <span class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+            <span>2. Contacted</span>
+          </span>
+          <span id="countStageContacted" class="text-[11px] font-bold text-zinc-400 tabular-nums">0</span>
+        </button>
+
+        <button onclick="filterByPreset('fu1')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition">
+          <span class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            <span>3. Reminder 1 Due</span>
+          </span>
+          <span id="countStageFu1" class="text-[11px] font-bold text-zinc-400 tabular-nums">0</span>
+        </button>
+
+        <button onclick="filterByPreset('fu2')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition">
+          <span class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+            <span>4. Reminder 2 Due</span>
+          </span>
+          <span id="countStageFu2" class="text-[11px] font-bold text-zinc-400 tabular-nums">0</span>
+        </button>
+
+        <button onclick="filterByPreset('replied')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition">
+          <span class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span>5. Replied / Won</span>
+          </span>
+          <span id="countStageReplied" class="text-[11px] font-bold text-zinc-400 tabular-nums">0</span>
+        </button>
+      </div>
+
     </div>
 
-    <div class="flex items-center gap-3">
-      <!-- Sync Status Pill -->
-      <div id="syncStatusPill" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-400 font-medium">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span id="syncStatusText">Synced with Google Sheet</span>
+    <!-- Bottom Database Indicator & Actions -->
+    <div class="p-3 m-3 bg-zinc-950 border border-white/[0.06] rounded-xl space-y-2.5">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span class="text-[11px] font-bold text-zinc-200">Google Sheet DB</span>
+        </div>
+        <button onclick="fetchSheetData()" title="Sync live with Sheet" class="text-zinc-400 hover:text-white p-1 rounded hover:bg-zinc-800 transition">
+          <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+        </button>
       </div>
 
-      <!-- Open Sheet Link -->
-      <a href="https://docs.google.com/spreadsheets/d/1AiuP1lstXRkSq-WR7nt5HBICgsNQzkxYriXWdu93Wps/edit" target="_blank" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-medium text-slate-200 transition">
-        <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 7h10v2H7zm0 4h10v2H7zm0 4h7v2H7z"/>
-        </svg>
-        <span>Open Sheet</span>
-      </a>
+      <div class="text-[10px] text-zinc-400 font-mono truncate">
+        1AiuP1lstXRkSq...
+      </div>
 
-      <!-- Settings / Connect Button -->
-      <button onclick="openSettingsModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition shadow-sm shadow-indigo-600/30">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-        </svg>
-        <span>API Settings</span>
+      <div class="flex items-center gap-1.5 pt-1.5 border-t border-white/[0.04]">
+        <a href="https://docs.google.com/spreadsheets/d/1AiuP1lstXRkSq-WR7nt5HBICgsNQzkxYriXWdu93Wps/edit" target="_blank" class="flex-1 text-center py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] font-semibold transition flex items-center justify-center gap-1">
+          <span>Sheet</span>
+          <i data-lucide="external-link" class="w-2.5 h-2.5"></i>
+        </a>
+        <button onclick="openSettingsModal()" class="flex-1 text-center py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] font-semibold transition flex items-center justify-center gap-1">
+          <i data-lucide="settings" class="w-2.5 h-2.5"></i>
+          <span>Settings</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==================== MAIN WORKSPACE ==================== -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#0B0C0E]">
+    
+    <!-- Topbar -->
+    <header class="h-14 border-b border-white/[0.06] bg-zinc-900/60 backdrop-blur-md px-6 flex items-center justify-between gap-4 shrink-0 z-20">
+      
+      <!-- Title & Search -->
+      <div class="flex items-center gap-4">
+        <div>
+          <h2 id="viewTitle" class="font-bold text-xs uppercase tracking-wider text-zinc-400">Pipeline Board</h2>
+          <div class="text-sm font-bold text-white tracking-tight flex items-center gap-2">
+            <span>DaftarHub Omnichannel Outreach</span>
+            <span class="badge bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Pakistan Agencies</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center / Right Actions -->
+      <div class="flex items-center gap-3">
+        <!-- Search bar -->
+        <div class="relative w-72">
+          <i data-lucide="search" class="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-2.5"></i>
+          <input type="text" id="searchInput" oninput="renderApp()" placeholder="Search company, founder, city..." class="w-full bg-zinc-950 border border-white/[0.08] rounded-xl px-3 py-1.5 pl-8 text-xs text-white placeholder-zinc-400 focus:outline-none focus:border-indigo-500 transition shadow-inner">
+          <span class="absolute right-2.5 top-2 text-[10px] text-zinc-400 font-mono bg-zinc-800/80 px-1 rounded border border-white/[0.04] pointer-events-none">/</span>
+        </div>
+
+        <!-- View Switcher -->
+        <div class="flex items-center bg-zinc-950 border border-white/[0.06] p-0.5 rounded-xl">
+          <button onclick="switchView('board')" id="toggleBoardBtn" class="px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition bg-indigo-600 text-white shadow-sm">
+            <i data-lucide="kanban" class="w-3 h-3"></i>
+            <span>Board</span>
+          </button>
+          <button onclick="switchView('table')" id="toggleTableBtn" class="px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition text-zinc-400 hover:text-zinc-200">
+            <i data-lucide="table" class="w-3 h-3"></i>
+            <span>Table</span>
+          </button>
+        </div>
+
+        <!-- Refresh Button -->
+        <button onclick="fetchSheetData()" class="p-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-white/[0.08] text-zinc-400 hover:text-white transition" title="Fetch latest from Google Sheet">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Linear-style Metric Strip -->
+    <div class="px-6 py-2.5 border-b border-white/[0.06] bg-zinc-900/40 grid grid-cols-4 gap-4 shrink-0 text-xs">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-7 h-7 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+          <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+        </div>
+        <div>
+          <div class="text-[11px] text-zinc-400 font-medium">Total Ingested</div>
+          <div class="text-sm font-bold text-white tracking-tight flex items-center gap-2">
+            <span id="kpiTotal" class="tabular-nums">2</span>
+            <span class="text-[10px] text-indigo-400 font-semibold bg-indigo-500/10 px-1.5 rounded">+2 / day</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="w-7 h-7 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+          <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+        </div>
+        <div>
+          <div class="text-[11px] text-zinc-400 font-medium">Action Due Today</div>
+          <div class="text-sm font-bold text-amber-400 tracking-tight tabular-nums" id="kpiActionToday">2</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="w-7 h-7 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+        </div>
+        <div>
+          <div class="text-[11px] text-zinc-400 font-medium">Outreach Rate</div>
+          <div class="text-sm font-bold text-sky-400 tracking-tight tabular-nums" id="kpiContactedRate">0%</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+          <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+        </div>
+        <div>
+          <div class="text-[11px] text-zinc-400 font-medium">Conversations Started</div>
+          <div class="text-sm font-bold text-emerald-400 tracking-tight tabular-nums" id="kpiReplied">0</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Active Filter Strip -->
+    <div id="filterStrip" class="hidden px-6 py-2 bg-indigo-950/20 border-b border-indigo-500/20 flex items-center justify-between text-xs">
+      <div class="flex items-center gap-2">
+        <span class="text-indigo-300 font-medium">Filtered by: <strong id="filterPresetLabel" class="text-white">Action Today</strong></span>
+      </div>
+      <button onclick="filterByPreset('all')" class="text-indigo-400 hover:text-indigo-200 font-semibold text-[11px] flex items-center gap-1">
+        <span>Clear filter</span>
+        <i data-lucide="x" class="w-3 h-3"></i>
       </button>
     </div>
-  </header>
 
-  <!-- MAIN CONTAINER -->
-  <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-6">
-
-    <!-- KPI STATS GRID -->
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
-      <!-- Total Leads -->
-      <div class="bg-[#10172a] border border-slate-800 rounded-xl p-3.5 shadow-sm">
-        <div class="flex items-center justify-between text-slate-400 mb-1">
-          <span class="text-xs font-medium">Total Leads</span>
-          <span class="text-[10px] bg-indigo-500/10 text-indigo-400 font-semibold px-1.5 py-0.5 rounded">+2 Daily</span>
+    <!-- Main Workspace Container -->
+    <div class="flex-1 overflow-auto p-6 relative">
+      
+      <!-- ==================== VIEW 1: KANBAN BOARD WITH DRAG-AND-DROP ==================== -->
+      <div id="boardView" class="h-full flex gap-4 min-w-[1240px]">
+        
+        <!-- Column 1: New Leads -->
+        <div class="flex-1 bg-zinc-950/70 border border-white/[0.06] rounded-2xl flex flex-col overflow-hidden transition-colors" id="kanbanCol_new" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'new')">
+          <div class="p-3 border-b border-white/[0.06] flex items-center justify-between bg-zinc-900/60">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-zinc-400"></span>
+              <span class="font-bold text-xs text-zinc-200">1. New Leads</span>
+            </div>
+            <span id="badgeColNew" class="text-[10px] font-bold bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-full tabular-nums">0</span>
+          </div>
+          <div id="colNew" class="flex-1 p-3 space-y-3 overflow-y-auto"></div>
         </div>
-        <div id="statTotal" class="text-2xl font-bold text-white tracking-tight">0</div>
-        <div class="text-[11px] text-slate-500 mt-1">Pakistan agencies</div>
-      </div>
 
-      <!-- Contacted -->
-      <div class="bg-[#10172a] border border-slate-800 rounded-xl p-3.5 shadow-sm">
-        <div class="flex items-center justify-between text-slate-400 mb-1">
-          <span class="text-xs font-medium">Contacted</span>
-          <span id="statContactedRate" class="text-[10px] text-emerald-400 font-semibold">0%</span>
+        <!-- Column 2: Contacted -->
+        <div class="flex-1 bg-zinc-950/70 border border-white/[0.06] rounded-2xl flex flex-col overflow-hidden transition-colors" id="kanbanCol_contacted" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'contacted')">
+          <div class="p-3 border-b border-white/[0.06] flex items-center justify-between bg-zinc-900/60">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+              <span class="font-bold text-xs text-zinc-200">2. Contacted</span>
+            </div>
+            <span id="badgeColContacted" class="text-[10px] font-bold bg-sky-950 text-sky-300 border border-sky-800/40 px-2 py-0.5 rounded-full tabular-nums">0</span>
+          </div>
+          <div id="colContacted" class="flex-1 p-3 space-y-3 overflow-y-auto"></div>
         </div>
-        <div id="statContacted" class="text-2xl font-bold text-emerald-400 tracking-tight">0</div>
-        <div class="text-[11px] text-slate-500 mt-1">Outreached leads</div>
-      </div>
 
-      <!-- Needs Follow-up Today -->
-      <div class="bg-gradient-to-br from-amber-500/10 to-orange-500/5 border border-amber-500/30 rounded-xl p-3.5 shadow-sm">
-        <div class="flex items-center justify-between text-amber-300 mb-1">
-          <span class="text-xs font-semibold flex items-center gap-1">
-            <span>🔥 Action Today</span>
-          </span>
-          <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+        <!-- Column 3: Reminder 1 Due -->
+        <div class="flex-1 bg-zinc-950/70 border border-white/[0.06] rounded-2xl flex flex-col overflow-hidden transition-colors" id="kanbanCol_fu1" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'fu1')">
+          <div class="p-3 border-b border-white/[0.06] flex items-center justify-between bg-zinc-900/60">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              <span class="font-bold text-xs text-zinc-200">3. Reminder 1 Due</span>
+            </div>
+            <span id="badgeColFu1" class="text-[10px] font-bold bg-amber-950 text-amber-300 border border-amber-800/40 px-2 py-0.5 rounded-full tabular-nums">0</span>
+          </div>
+          <div id="colFu1" class="flex-1 p-3 space-y-3 overflow-y-auto"></div>
         </div>
-        <div id="statDueToday" class="text-2xl font-bold text-amber-300 tracking-tight">0</div>
-        <div class="text-[11px] text-amber-400/80 mt-1">Needs reminder today</div>
+
+        <!-- Column 4: Reminder 2 Due -->
+        <div class="flex-1 bg-zinc-950/70 border border-white/[0.06] rounded-2xl flex flex-col overflow-hidden transition-colors" id="kanbanCol_fu2" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'fu2')">
+          <div class="p-3 border-b border-white/[0.06] flex items-center justify-between bg-zinc-900/60">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+              <span class="font-bold text-xs text-zinc-200">4. Reminder 2 Due</span>
+            </div>
+            <span id="badgeColFu2" class="text-[10px] font-bold bg-purple-950 text-purple-300 border border-purple-800/40 px-2 py-0.5 rounded-full tabular-nums">0</span>
+          </div>
+          <div id="colFu2" class="flex-1 p-3 space-y-3 overflow-y-auto"></div>
+        </div>
+
+        <!-- Column 5: Replied / Closed -->
+        <div class="flex-1 bg-zinc-950/70 border border-white/[0.06] rounded-2xl flex flex-col overflow-hidden transition-colors" id="kanbanCol_final" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'final')">
+          <div class="p-3 border-b border-white/[0.06] flex items-center justify-between bg-zinc-900/60">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span class="font-bold text-xs text-zinc-200">5. Replied / Closed</span>
+            </div>
+            <span id="badgeColFinal" class="text-[10px] font-bold bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded-full tabular-nums">0</span>
+          </div>
+          <div id="colFinal" class="flex-1 p-3 space-y-3 overflow-y-auto"></div>
+        </div>
+
       </div>
 
-      <!-- Follow-up 1 Due -->
-      <div class="bg-[#10172a] border border-slate-800 rounded-xl p-3.5 shadow-sm">
-        <div class="text-xs font-medium text-slate-400 mb-1">Follow-up 1 Due</div>
-        <div id="statFollowup1" class="text-2xl font-bold text-sky-400 tracking-tight">0</div>
-        <div class="text-[11px] text-slate-500 mt-1">1st reminder queue</div>
+      <!-- ==================== VIEW 2: INTERACTIVE TABLE ==================== -->
+      <div id="tableView" class="hidden">
+        <div class="linear-card rounded-2xl overflow-hidden shadow-2xl">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-white/[0.08] bg-zinc-900 text-zinc-400 font-semibold select-none">
+                <th class="py-3 px-4 font-semibold text-[11px] uppercase tracking-wider">Company</th>
+                <th class="py-3 px-4 font-semibold text-[11px] uppercase tracking-wider">Founder / Decision Maker</th>
+                <th class="py-3 px-4 font-semibold text-[11px] uppercase tracking-wider">Location</th>
+                <th class="py-3 px-4 font-semibold text-[11px] uppercase tracking-wider">All Social & Contact Channels</th>
+                <th class="py-3 px-4 font-semibold text-[11px] uppercase tracking-wider">Pipeline Stage</th>
+                <th class="py-3 px-4 font-semibold text-[11px] uppercase tracking-wider">Reminders Progress</th>
+                <th class="py-3 px-4 font-semibold text-[11px] uppercase tracking-wider text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody" class="divide-y divide-white/[0.04] font-medium"></tbody>
+          </table>
+        </div>
       </div>
 
-      <!-- Follow-up 2 Due -->
-      <div class="bg-[#10172a] border border-slate-800 rounded-xl p-3.5 shadow-sm">
-        <div class="text-xs font-medium text-slate-400 mb-1">Follow-up 2 Due</div>
-        <div id="statFollowup2" class="text-2xl font-bold text-purple-400 tracking-tight">0</div>
-        <div class="text-[11px] text-slate-500 mt-1">2nd reminder queue</div>
-      </div>
-
-      <!-- Replied / Interested -->
-      <div class="bg-[#10172a] border border-slate-800 rounded-xl p-3.5 shadow-sm">
-        <div class="text-xs font-medium text-slate-400 mb-1">Replied / Won</div>
-        <div id="statReplied" class="text-2xl font-bold text-emerald-300 tracking-tight">0</div>
-        <div class="text-[11px] text-slate-500 mt-1">Active discussions</div>
-      </div>
-
-      <!-- Closed / No Reply -->
-      <div class="bg-[#10172a] border border-slate-800 rounded-xl p-3.5 shadow-sm">
-        <div class="text-xs font-medium text-slate-400 mb-1">Closed / No Reply</div>
-        <div id="statNoReply" class="text-2xl font-bold text-slate-400 tracking-tight">0</div>
-        <div class="text-[11px] text-slate-500 mt-1">Archived prospects</div>
-      </div>
     </div>
 
-    <!-- FILTER & PIPELINE BAR -->
-    <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between bg-[#0e1424] border border-slate-800/90 rounded-2xl p-2.5">
-      <!-- Tabs -->
-      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0" id="filterTabs">
-        <button onclick="setFilter('all')" data-tab="all" class="filter-btn active-tab px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-indigo-600 text-white shadow-sm">
-          All Leads (<span id="countAll">0</span>)
-        </button>
-        <button onclick="setFilter('needs_action')" data-tab="needs_action" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white">
-          🔥 Needs Follow-up Today (<span id="countAction">0</span>)
-        </button>
-        <button onclick="setFilter('uncontacted')" data-tab="uncontacted" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white">
-          Not Contacted (<span id="countUncontacted">0</span>)
-        </button>
-        <button onclick="setFilter('fu1')" data-tab="fu1" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white">
-          1st Reminder (<span id="countFu1">0</span>)
-        </button>
-        <button onclick="setFilter('fu2')" data-tab="fu2" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white">
-          2nd Reminder (<span id="countFu2">0</span>)
-        </button>
-        <button onclick="setFilter('replied')" data-tab="replied" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white">
-          Replied (<span id="countReplied">0</span>)
-        </button>
-        <button onclick="setFilter('noreply')" data-tab="noreply" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white">
-          No Reply (<span id="countNoReply">0</span>)
-        </button>
+  </div>
+
+  <!-- ==================== SLIDE-OVER DETAIL DRAWER ==================== -->
+  <div id="leadDrawerBackdrop" onclick="closeDrawer()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity"></div>
+  <aside id="leadDrawer" class="fixed right-0 top-0 bottom-0 w-full max-w-xl bg-zinc-900 border-l border-white/[0.08] shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+    
+    <!-- Drawer Header -->
+    <div class="p-5 border-b border-white/[0.08] bg-zinc-950/70 flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-indigo-700 flex items-center justify-center font-bold text-white text-base shadow-lg shadow-indigo-600/20" id="drawerAvatar">
+          S
+        </div>
+        <div>
+          <div class="text-[10px] font-bold uppercase tracking-wider text-indigo-400" id="drawerCategory">Industry</div>
+          <h3 class="text-base font-bold text-white tracking-tight" id="drawerCompanyName">Company</h3>
+        </div>
       </div>
 
-      <!-- Search & Refresh -->
       <div class="flex items-center gap-2">
-        <div class="relative flex-1 md:w-64">
-          <input type="text" id="searchInput" oninput="renderLeads()" placeholder="Search company, founder, city..." class="w-full bg-[#121a2f] border border-slate-700/80 rounded-xl px-3 py-1.5 pl-8 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition">
-          <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-          </svg>
-        </div>
-        <button onclick="fetchSheetData()" title="Refresh from Sheet" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white transition">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-          </svg>
+        <button onclick="closeDrawer()" class="w-8 h-8 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
     </div>
 
-    <!-- LEADS LIST CONTAINER -->
-    <div id="leadsContainer" class="space-y-4">
-      <!-- Dynamic Lead Cards injected here -->
+    <!-- Drawer Content -->
+    <div class="flex-1 overflow-y-auto p-5 space-y-6">
+      
+      <!-- COMPLETE OMNICHANNEL CONTACT HUB -->
+      <div class="bg-zinc-950 border border-white/[0.06] rounded-xl p-4 space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-sm font-bold text-white flex items-center gap-2">
+              <span id="drawerFounderName">Founder Name</span>
+              <span class="text-xs text-zinc-400 font-normal" id="drawerDesignation">(CEO)</span>
+            </div>
+            <div class="text-[11px] text-zinc-400 mt-0.5 flex items-center gap-1.5">
+              <i data-lucide="map-pin" class="w-3 h-3 text-rose-400"></i>
+              <span id="drawerLocation">Location</span>
+            </div>
+          </div>
+          <span class="badge bg-zinc-800 text-zinc-300 border border-white/[0.04]" id="drawerEmployees">2–9 team</span>
+        </div>
+
+        <!-- Social & Contact Grid (All 9 Channels) -->
+        <div>
+          <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2.5">Omnichannel Contact Options</div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" id="drawerChannelsGrid">
+            <!-- Dynamically populated with active buttons for every channel -->
+          </div>
+        </div>
+
+        <!-- 1-Click Fast Launchers (WhatsApp & Email with Pitch) -->
+        <div class="flex items-center gap-2 pt-2 border-t border-white/[0.04]">
+          <a id="drawerWhatsAppBtn" href="#" target="_blank" class="flex-1 py-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-bold text-center transition flex items-center justify-center gap-2 shadow-sm">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            <span>Send WhatsApp Pitch</span>
+          </a>
+          <a id="drawerEmailBtn" href="#" target="_blank" class="flex-1 py-2.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 text-sky-400 border border-sky-500/30 text-xs font-bold text-center transition flex items-center justify-center gap-2 shadow-sm">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+            <span>Send Email Pitch</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Personalized Pitch Drawer -->
+      <div class="bg-indigo-950/20 border border-indigo-500/20 rounded-xl p-4 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-indigo-400"></i>
+            <span>Personalized Pitch Angle</span>
+          </span>
+          <button onclick="copyPitchText()" class="text-[11px] font-semibold text-indigo-400 hover:text-indigo-200 transition flex items-center gap-1">
+            <i data-lucide="copy" class="w-3 h-3"></i>
+            <span>Copy</span>
+          </button>
+        </div>
+        <p class="text-xs text-indigo-100/90 leading-relaxed font-normal" id="drawerPitchText">
+          Pitch loading...
+        </p>
+      </div>
+
+      <!-- Outreach Stepper Progression -->
+      <div class="space-y-3">
+        <div class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Outreach Milestones</div>
+        
+        <div class="space-y-2 text-xs">
+          <!-- Step 1: Initial Touchpoint -->
+          <div class="p-3 bg-zinc-950 border border-white/[0.06] rounded-xl flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span id="step1Icon" class="w-5 h-5 rounded-full bg-zinc-800 text-zinc-400 flex items-center justify-center text-[10px] font-bold">1</span>
+              <div>
+                <div class="font-bold text-white">Initial Touchpoint</div>
+                <div class="text-[11px] text-zinc-400" id="step1Desc">Uncontacted</div>
+              </div>
+            </div>
+            <select id="drawerContactedSelect" onchange="drawerUpdateStatus(this.value)" class="bg-zinc-800 text-white font-semibold text-xs px-2.5 py-1 rounded-lg border border-white/[0.08] focus:outline-none cursor-pointer">
+              <option value="No">Not Sent</option>
+              <option value="Yes - WhatsApp">Sent via WhatsApp</option>
+              <option value="Yes - Email">Sent via Email</option>
+              <option value="Yes - LinkedIn">Sent via LinkedIn</option>
+              <option value="Yes - Instagram">Sent via Instagram DM</option>
+              <option value="Yes - Facebook">Sent via Facebook</option>
+              <option value="Yes - Phone">Called Phone</option>
+            </select>
+          </div>
+
+          <!-- Step 2: Reminder 1 -->
+          <div class="p-3 bg-zinc-950 border border-white/[0.06] rounded-xl flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span id="step2Icon" class="w-5 h-5 rounded-full bg-zinc-800 text-zinc-400 flex items-center justify-center text-[10px] font-bold">2</span>
+              <div>
+                <div class="font-bold text-white">Follow-Up Reminder 1</div>
+                <div class="text-[11px] text-zinc-400" id="step2Desc">Scheduled in 3 days</div>
+              </div>
+            </div>
+            <button onclick="drawerToggleFollowup(1)" id="drawerFu1Btn" class="px-3 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-zinc-200 border border-white/[0.08] transition">
+              Mark Sent
+            </button>
+          </div>
+
+          <!-- Step 3: Reminder 2 -->
+          <div class="p-3 bg-zinc-950 border border-white/[0.06] rounded-xl flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span id="step3Icon" class="w-5 h-5 rounded-full bg-zinc-800 text-zinc-400 flex items-center justify-center text-[10px] font-bold">3</span>
+              <div>
+                <div class="font-bold text-white">Follow-Up Reminder 2</div>
+                <div class="text-[11px] text-zinc-400" id="step3Desc">Scheduled in 6 days</div>
+              </div>
+            </div>
+            <button onclick="drawerToggleFollowup(2)" id="drawerFu2Btn" class="px-3 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-zinc-200 border border-white/[0.08] transition">
+              Mark Sent
+            </button>
+          </div>
+
+          <!-- Final Outcome -->
+          <div class="p-3 bg-zinc-950 border border-white/[0.06] rounded-xl flex items-center justify-between">
+            <div>
+              <div class="font-bold text-white">Final Outcome</div>
+              <div class="text-[11px] text-zinc-400" id="stepFinalDesc">Awaiting response</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="drawerSetOutcome('Replied')" class="px-2.5 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold text-xs transition flex items-center gap-1">
+                <i data-lucide="check" class="w-3 h-3"></i>
+                <span>Replied</span>
+              </button>
+              <button onclick="drawerSetOutcome('Not Interested')" class="px-2.5 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 font-semibold text-xs transition flex items-center gap-1">
+                <i data-lucide="x" class="w-3 h-3"></i>
+                <span>No Reply</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes Field -->
+      <div class="space-y-2">
+        <label class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block">Lead Notes</label>
+        <textarea id="drawerNotes" rows="3" onblur="drawerSaveNotes(this.value)" placeholder="Add custom notes (auto-saves to Google Sheet)..." class="w-full bg-zinc-950 border border-white/[0.08] rounded-xl p-3 text-xs text-white placeholder-zinc-400 focus:outline-none focus:border-indigo-500 font-sans resize-none"></textarea>
+      </div>
+
     </div>
 
-  </main>
+  </aside>
 
-  <!-- SETTINGS MODAL -->
+  <!-- ==================== COMMAND PALETTE (CMD+K) ==================== -->
+  <div id="cmdPalette" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-start justify-center pt-24 p-4" onclick="closeCommandPalette()">
+    <div class="bg-zinc-900 border border-white/[0.1] rounded-2xl max-w-xl w-full shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+      <div class="p-3 border-b border-white/[0.08] flex items-center gap-3">
+        <i data-lucide="search" class="w-4 h-4 text-zinc-400"></i>
+        <input type="text" id="cmdInput" oninput="renderCommandResults()" placeholder="Type a command or search leads..." class="bg-transparent flex-1 text-sm text-white placeholder-zinc-400 focus:outline-none">
+        <span class="text-[10px] font-mono text-zinc-400 bg-zinc-800 px-1.5 py-0.5 rounded">ESC</span>
+      </div>
+      <div id="cmdResults" class="p-2 max-h-80 overflow-y-auto space-y-1 text-xs"></div>
+    </div>
+  </div>
+
+  <!-- ==================== SETTINGS MODAL ==================== -->
   <div id="settingsModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-[#0f172a] border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-        <h3 class="font-bold text-base text-white flex items-center gap-2">
+    <div class="bg-zinc-900 border border-white/[0.1] rounded-2xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
+      <div class="flex items-center justify-between border-b border-white/[0.08] pb-3">
+        <h3 class="font-bold text-sm text-white flex items-center gap-2">
+          <i data-lucide="settings" class="w-4 h-4 text-indigo-400"></i>
           <span>Google Sheet Two-Way Sync</span>
         </h3>
-        <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white text-lg leading-none">&times;</button>
+        <button onclick="closeSettingsModal()" class="text-zinc-400 hover:text-white">&times;</button>
       </div>
 
-      <p class="text-xs text-slate-300 leading-relaxed">
-        To allow this dashboard to directly update rows in your Google Sheet when you tick follow-up buttons, deploy the provided Google Apps Script as a Web App:
+      <p class="text-xs text-zinc-400 leading-relaxed">
+        Paste your Google Apps Script Web App URL below to sync your dashboard live with Google Sheets:
       </p>
 
-      <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2 text-xs">
-        <div class="font-semibold text-slate-200">3-Step Quick Connection:</div>
-        <ol class="list-decimal list-inside text-slate-400 space-y-1">
-          <li>In your Google Sheet, click <strong class="text-slate-200">Extensions &gt; Apps Script</strong>.</li>
-          <li>Paste the code from <code class="text-indigo-400">Code.gs</code> (already saved in your project folder).</li>
-          <li>Click <strong class="text-slate-200">Deploy &gt; New deployment &gt; Web app</strong> (Access: <em>Anyone</em>), then paste the Web App URL below:</li>
-        </ol>
+      <div class="bg-zinc-950 border border-white/[0.06] rounded-xl p-3 text-xs space-y-1 font-mono text-zinc-400">
+        <div>Spreadsheet ID: <strong class="text-zinc-200">1AiuP1lstXRkSq-WR7nt5HBICgsNQzkxYriXWdu93Wps</strong></div>
+        <div class="text-[11px] text-zinc-400">Code is saved in: <code class="text-indigo-400">Desktop\fahad\Code.gs</code></div>
       </div>
 
       <div>
-        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Google Apps Script Web App URL</label>
-        <input type="url" id="webAppUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-[#16213b] border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono">
+        <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Web App URL</label>
+        <input type="url" id="webAppUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-zinc-950 border border-white/[0.1] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-400 focus:outline-none focus:border-indigo-500 font-mono">
       </div>
 
-      <div class="flex items-center justify-between pt-2">
-        <button onclick="saveSettings()" class="w-full py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition">
-          Save & Connect
-        </button>
-      </div>
+      <button onclick="saveSettings()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition">
+        Save & Connect Live
+      </button>
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION -->
-  <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-300 bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-xl text-xs font-semibold flex items-center gap-2 z-50">
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-    </svg>
-    <span id="toastMessage">Sheet updated successfully</span>
+  <!-- TOAST -->
+  <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-300 bg-zinc-900 border border-white/[0.12] text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2.5 z-50">
+    <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+    <span id="toastMessage">Updated</span>
   </div>
 
-  <!-- SCRIPT -->
+  <!-- JAVASCRIPT ENGINE -->
   <script>
-    // Initial Verified Leads from Sheet
     const INITIAL_LEADS = [
       {
         rowIndex: 2,
         companyName: "SolSvc (SOLsVC)",
-        industry: "Custom Software Development & Cloud Solutions",
-        location: "134-DD, 2nd Floor, Commercial Market, Sector CCA, DHA Phase 4, Lahore, Pakistan",
+        industry: "Custom Software Development & Cloud",
+        location: "134-DD, 2nd Floor, CCA, DHA Phase 4, Lahore, Pakistan",
         estimatedEmployees: "2–9 employees",
         website: "https://solsvc.com",
-        googleMaps: "DHA Phase 4, Sector CCA Commercial Market, Lahore",
+        googleMaps: "https://maps.google.com/?q=DHA+Phase+4+Lahore",
         decisionMakerName: "Rizwan Rafiq",
         designation: "Founder & CEO",
         email: "hello@rizwanrafiq.com",
@@ -279,11 +704,11 @@
       {
         rowIndex: 3,
         companyName: "Digital-Marketing.pk",
-        industry: "Digital Marketing, SEO & Web Development",
+        industry: "Digital Marketing, SEO & Ads",
         location: "Gulberg III, Lahore, Pakistan",
-        estimatedEmployees: "4–10 employees (estimated)",
+        estimatedEmployees: "4–10 employees",
         website: "https://digital-marketing.pk",
-        googleMaps: "Gulberg III, Lahore, Pakistan",
+        googleMaps: "https://maps.google.com/?q=Gulberg+III+Lahore",
         decisionMakerName: "Junaid Tariq",
         designation: "Founder & Lead Strategist",
         email: "hello@digital-marketing.pk",
@@ -307,357 +732,721 @@
     ];
 
     let leads = [];
-    let currentFilter = 'all';
+    let currentView = 'board';
+    let activePreset = 'all';
+    let selectedLead = null;
+    let draggedRowIndex = null;
     let webAppUrl = localStorage.getItem('daftarhub_webapp_url') || '';
 
-    // Initialize
     function init() {
-      const stored = localStorage.getItem('daftarhub_leads_cache');
-      if (stored) {
-        try { leads = JSON.parse(stored); } catch(e) { leads = [...INITIAL_LEADS]; }
+      const cached = localStorage.getItem('daftarhub_leads_cache');
+      if (cached) {
+        try { leads = JSON.parse(cached); } catch(e) { leads = [...INITIAL_LEADS]; }
       } else {
         leads = [...INITIAL_LEADS];
       }
-      
+
       if (webAppUrl) {
         document.getElementById('webAppUrlInput').value = webAppUrl;
         fetchSheetData();
       }
-      
-      updateStats();
-      renderLeads();
-    }
 
-    // Save Leads to Cache
-    function saveCache() {
-      localStorage.setItem('daftarhub_leads_cache', JSON.stringify(leads));
-      updateStats();
-      renderLeads();
-    }
+      renderApp();
 
-    // Update Top KPI Counters
-    function updateStats() {
-      const total = leads.length;
-      const contacted = leads.filter(l => l.contacted && l.contacted !== 'No').length;
-      const replied = leads.filter(l => l.contacted === 'Replied' || (l.notes && l.notes.includes('Replied'))).length;
-      const noReply = leads.filter(l => l.contacted === 'Not Interested' || l.followup2Status === 'Closed' || l.followup1Status === 'Closed').length;
-      
-      const fu1Due = leads.filter(l => l.contacted !== 'No' && l.followup1Status === 'Pending' && l.contacted !== 'Replied' && l.contacted !== 'Not Interested').length;
-      const fu2Due = leads.filter(l => l.followup1Status === 'Sent' && l.followup2Status === 'Pending' && l.contacted !== 'Replied' && l.contacted !== 'Not Interested').length;
-      
-      // Due today: either uncontacted or pending followups
-      const dueToday = leads.filter(l => l.contacted === 'No' || (l.contacted !== 'No' && l.followup1Status === 'Pending')).length;
-
-      document.getElementById('statTotal').innerText = total;
-      document.getElementById('statContacted').innerText = contacted;
-      document.getElementById('statContactedRate').innerText = total > 0 ? Math.round((contacted / total) * 100) + '%' : '0%';
-      document.getElementById('statDueToday').innerText = dueToday;
-      document.getElementById('statFollowup1').innerText = fu1Due;
-      document.getElementById('statFollowup2').innerText = fu2Due;
-      document.getElementById('statReplied').innerText = replied;
-      document.getElementById('statNoReply').innerText = noReply;
-
-      // Tab counters
-      document.getElementById('countAll').innerText = total;
-      document.getElementById('countAction').innerText = dueToday;
-      document.getElementById('countUncontacted').innerText = leads.filter(l => l.contacted === 'No').length;
-      document.getElementById('countFu1').innerText = fu1Due;
-      document.getElementById('countFu2').innerText = fu2Due;
-      document.getElementById('countReplied').innerText = replied;
-      document.getElementById('countNoReply').innerText = noReply;
-    }
-
-    // Set Active Filter Tab
-    function setFilter(filter) {
-      currentFilter = filter;
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        if (btn.dataset.tab === filter) {
-          btn.className = "filter-btn active-tab px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-indigo-600 text-white shadow-sm";
-        } else {
-          btn.className = "filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white";
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          toggleCommandPalette();
+        } else if (e.key === 'Escape') {
+          closeCommandPalette();
+          closeDrawer();
+          closeSettingsModal();
+        } else if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          document.getElementById('searchInput').focus();
         }
       });
-      renderLeads();
+
+      setInterval(() => {
+        if (navigator.onLine && webAppUrl) fetchSheetData();
+      }, 30000);
+
+      window.addEventListener('focus', () => {
+        if (navigator.onLine && webAppUrl) fetchSheetData();
+      });
     }
 
-    // Render Leads List
-    function renderLeads() {
-      const container = document.getElementById('leadsContainer');
+    function saveCache() {
+      localStorage.setItem('daftarhub_leads_cache', JSON.stringify(leads));
+      renderApp();
+    }
+
+    function switchView(view) {
+      currentView = view;
+      const board = document.getElementById('boardView');
+      const table = document.getElementById('tableView');
+      const btnB = document.getElementById('toggleBoardBtn');
+      const btnT = document.getElementById('toggleTableBtn');
+      const navB = document.getElementById('navBoard');
+      const navT = document.getElementById('navTable');
+
+      if (view === 'board') {
+        board.classList.remove('hidden');
+        table.classList.add('hidden');
+        document.getElementById('viewTitle').innerText = "Pipeline Board";
+        btnB.className = "px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition bg-indigo-600 text-white shadow-sm";
+        btnT.className = "px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition text-zinc-400 hover:text-zinc-200";
+        navB.className = "nav-btn w-full flex items-center justify-between px-3 py-2 rounded-xl text-white bg-indigo-600/90 shadow-sm transition";
+        navT.className = "nav-btn w-full flex items-center justify-between px-3 py-2 rounded-xl text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50 transition";
+      } else {
+        board.classList.add('hidden');
+        table.classList.remove('hidden');
+        document.getElementById('viewTitle').innerText = "All Leads Table";
+        btnT.className = "px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition bg-indigo-600 text-white shadow-sm";
+        btnB.className = "px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition text-zinc-400 hover:text-zinc-200";
+        navT.className = "nav-btn w-full flex items-center justify-between px-3 py-2 rounded-xl text-white bg-indigo-600/90 shadow-sm transition";
+        navB.className = "nav-btn w-full flex items-center justify-between px-3 py-2 rounded-xl text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50 transition";
+      }
+      renderApp();
+    }
+
+    function filterByPreset(preset) {
+      activePreset = preset;
+      const strip = document.getElementById('filterStrip');
+      const label = document.getElementById('filterPresetLabel');
+
+      if (preset === 'all') {
+        strip.classList.add('hidden');
+      } else {
+        strip.classList.remove('hidden');
+        const map = {
+          action_today: "Action Required Today",
+          uncontacted: "1. New Leads (Uncontacted)",
+          contacted: "2. Contacted",
+          fu1: "3. Reminder 1 Due",
+          fu2: "4. Reminder 2 Due",
+          replied: "5. Replied / Won"
+        };
+        label.innerText = map[preset] || preset;
+      }
+      renderApp();
+    }
+
+    function renderApp() {
+      updateMetrics();
+
       const searchQuery = (document.getElementById('searchInput').value || '').toLowerCase().trim();
 
-      const filtered = leads.filter(lead => {
-        // Search filter
+      const filtered = leads.filter(l => {
         if (searchQuery) {
-          const match = (lead.companyName + ' ' + lead.decisionMakerName + ' ' + lead.industry + ' ' + lead.location).toLowerCase();
-          if (!match.includes(searchQuery)) return false;
+          const hay = (l.companyName + ' ' + l.decisionMakerName + ' ' + l.industry + ' ' + l.location).toLowerCase();
+          if (!hay.includes(searchQuery)) return false;
         }
 
-        // Tab filters
-        if (currentFilter === 'needs_action') {
-          return lead.contacted === 'No' || (lead.contacted !== 'No' && lead.followup1Status === 'Pending');
-        }
-        if (currentFilter === 'uncontacted') return lead.contacted === 'No';
-        if (currentFilter === 'fu1') return lead.contacted !== 'No' && lead.followup1Status === 'Pending' && lead.contacted !== 'Replied' && lead.contacted !== 'Not Interested';
-        if (currentFilter === 'fu2') return lead.followup1Status === 'Sent' && lead.followup2Status === 'Pending' && lead.contacted !== 'Replied' && lead.contacted !== 'Not Interested';
-        if (currentFilter === 'replied') return lead.contacted === 'Replied' || (lead.notes && lead.notes.includes('Replied'));
-        if (currentFilter === 'noreply') return lead.contacted === 'Not Interested' || lead.followup2Status === 'Closed' || lead.followup1Status === 'Closed';
+        if (activePreset === 'action_today') return l.contacted === 'No' || (l.contacted !== 'No' && l.followup1Status === 'Pending');
+        if (activePreset === 'uncontacted') return l.contacted === 'No';
+        if (activePreset === 'contacted') return l.contacted !== 'No' && l.followup1Status !== 'Sent';
+        if (activePreset === 'fu1') return l.contacted !== 'No' && l.followup1Status === 'Pending';
+        if (activePreset === 'fu2') return l.followup1Status === 'Sent' && l.followup2Status === 'Pending';
+        if (activePreset === 'replied') return l.contacted === 'Replied';
 
         return true;
       });
 
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="bg-[#10172a] border border-slate-800/80 rounded-2xl p-10 text-center space-y-2">
-            <div class="text-3xl">🎯</div>
-            <div class="text-sm font-semibold text-white">No leads match this view</div>
-            <p class="text-xs text-slate-400">Try choosing a different tab or clear your search term.</p>
-          </div>
-        `;
-        return;
+      renderKanban(filtered);
+      renderTable(filtered);
+      lucide.createIcons();
+    }
+
+    function updateMetrics() {
+      const total = leads.length;
+      const contacted = leads.filter(l => l.contacted && l.contacted !== 'No').length;
+      const replied = leads.filter(l => l.contacted === 'Replied').length;
+      const actionToday = leads.filter(l => l.contacted === 'No' || (l.contacted !== 'No' && l.followup1Status === 'Pending')).length;
+
+      const uncontacted = leads.filter(l => l.contacted === 'No').length;
+      const fu1 = leads.filter(l => l.contacted !== 'No' && l.followup1Status === 'Pending').length;
+      const fu2 = leads.filter(l => l.followup1Status === 'Sent' && l.followup2Status === 'Pending').length;
+
+      document.getElementById('kpiTotal').innerText = total;
+      document.getElementById('kpiActionToday').innerText = actionToday;
+      document.getElementById('kpiContactedRate').innerText = total > 0 ? Math.round((contacted / total) * 100) + '%' : '0%';
+      document.getElementById('kpiReplied').innerText = replied;
+
+      document.getElementById('badgeBoardTotal').innerText = total;
+      document.getElementById('badgeTableTotal').innerText = total;
+      document.getElementById('badgeActionToday').innerText = actionToday;
+
+      document.getElementById('countStageNew').innerText = uncontacted;
+      document.getElementById('countStageContacted').innerText = contacted - fu1 - fu2;
+      document.getElementById('countStageFu1').innerText = fu1;
+      document.getElementById('countStageFu2').innerText = fu2;
+      document.getElementById('countStageReplied').innerText = replied;
+    }
+
+    // ==================== DRAG & DROP ENGINE ====================
+    function handleDragStart(e, rowIndex) {
+      draggedRowIndex = rowIndex;
+      e.target.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', rowIndex);
+      e.dataTransfer.effectAllowed = 'move';
+    }
+
+    function handleDragEnd(e) {
+      e.target.classList.remove('dragging');
+      document.querySelectorAll('.kanban-col-dragover').forEach(el => el.classList.remove('kanban-col-dragover'));
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      e.currentTarget.classList.add('kanban-col-dragover');
+    }
+
+    function handleDragLeave(e) {
+      e.currentTarget.classList.remove('kanban-col-dragover');
+    }
+
+    function handleDrop(e, targetStage) {
+      e.preventDefault();
+      e.currentTarget.classList.remove('kanban-col-dragover');
+      if (draggedRowIndex === null) return;
+
+      const lead = leads.find(l => l.rowIndex === draggedRowIndex);
+      if (!lead) return;
+
+      const today = new Date().toISOString().split('T')[0];
+
+      if (targetStage === 'new') {
+        lead.contacted = 'No';
+        lead.contactDate = '';
+        lead.followup1Status = 'Pending';
+        lead.followup2Status = 'Pending';
+      } else if (targetStage === 'contacted') {
+        lead.contacted = 'Yes - WhatsApp';
+        lead.contactDate = today;
+      } else if (targetStage === 'fu1') {
+        if (lead.contacted === 'No') lead.contacted = 'Yes - WhatsApp';
+        lead.followup1Status = 'Pending';
+      } else if (targetStage === 'fu2') {
+        lead.followup1Status = 'Sent';
+        lead.followup1Date = today;
+        lead.followup2Status = 'Pending';
+      } else if (targetStage === 'final') {
+        lead.contacted = 'Replied';
       }
 
-      container.innerHTML = filtered.map(lead => {
-        // Pre-composed Pitch Message for WhatsApp / Email
-        const cleanWhatsApp = (lead.whatsapp || lead.phone || '').replace(/[^0-9]/g, '');
-        const whatsappPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'}, noticed ${lead.companyName}'s work in ${lead.location.split(',')[0]}! We built DaftarHub (all-in-one team, attendance, and project platform for Pakistani agencies) to eliminate messy spreadsheets. Would love to share a quick 2-min walkthrough with you.`);
-        const emailPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'},\n\nNoticed ${lead.companyName}'s team and projects in ${lead.location.split(',')[0]}.\n\nManaging team attendance, leaves, and project milestones across multiple spreadsheets can quickly become fragmented as your team scales.\n\nWe built DaftarHub specifically as an all-in-one operating system for Pakistani professional services and agencies.\n\nWould you be open to a quick 5-min demo this week?\n\nBest regards,\nDaftarHub Team`);
+      syncRowToSheet(lead, {
+        contacted: lead.contacted,
+        contactDate: lead.contactDate,
+        followup1Status: lead.followup1Status,
+        followup1Date: lead.followup1Date,
+        followup2Status: lead.followup2Status,
+        followup2Date: lead.followup2Date
+      });
 
-        const isContacted = lead.contacted && lead.contacted !== 'No';
-        const isFu1Sent = lead.followup1Status === 'Sent';
-        const isFu2Sent = lead.followup2Status === 'Sent';
-        const isReplied = lead.contacted === 'Replied';
-        const isClosed = lead.contacted === 'Not Interested' || lead.followup2Status === 'Closed';
+      saveCache();
+      showToast(`Moved ${lead.companyName} to ${targetStage.toUpperCase()}`);
+      draggedRowIndex = null;
+    }
+
+    // Helper: Build channel action icons ribbon
+    function renderChannelsRibbon(lead) {
+      const cleanWA = (lead.whatsapp || lead.phone || '').replace(/[^0-9]/g, '');
+      const waPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'}, noticed ${lead.companyName}'s work! We built DaftarHub to eliminate spreadsheet clutter for attendance, leaves, and project tasks for teams in Pakistan.`);
+      const emailPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'},\n\nWe built DaftarHub specifically as an all-in-one operating platform for Pakistani agencies and software teams.\n\nWould you be open to a quick 5-min demo this week?`);
+
+      return `
+        <div class="flex items-center gap-1.5 flex-wrap" onclick="event.stopPropagation()">
+          ${cleanWA ? `
+            <a href="https://wa.me/${cleanWA}?text=${waPitch}" target="_blank" class="channel-btn bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20" title="WhatsApp (${lead.whatsapp || lead.phone})">
+              <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+            </a>
+          ` : ''}
+
+          ${lead.email ? `
+            <a href="mailto:${escapeHtml(lead.email)}?subject=DaftarHub%20for%20${encodeURIComponent(lead.companyName)}&body=${emailPitch}" target="_blank" class="channel-btn bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/20" title="Email (${lead.email})">
+              <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+            </a>
+          ` : ''}
+
+          ${lead.phone ? `
+            <a href="tel:${escapeHtml(lead.phone)}" class="channel-btn bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/20" title="Phone (${lead.phone})">
+              <i data-lucide="phone" class="w-3.5 h-3.5"></i>
+            </a>
+          ` : ''}
+
+          ${lead.decisionMakerLinkedIn ? `
+            <a href="${escapeHtml(lead.decisionMakerLinkedIn)}" target="_blank" class="channel-btn bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/20" title="Founder LinkedIn / Profile">
+              <i data-lucide="linkedin" class="w-3.5 h-3.5"></i>
+            </a>
+          ` : ''}
+
+          ${lead.instagram ? `
+            <a href="${escapeHtml(lead.instagram)}" target="_blank" class="channel-btn bg-pink-500/10 hover:bg-pink-500/20 text-pink-400 border border-pink-500/20" title="Instagram">
+              <i data-lucide="instagram" class="w-3.5 h-3.5"></i>
+            </a>
+          ` : ''}
+
+          ${lead.facebook ? `
+            <a href="${escapeHtml(lead.facebook)}" target="_blank" class="channel-btn bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 border border-blue-600/20" title="Facebook">
+              <i data-lucide="facebook" class="w-3.5 h-3.5"></i>
+            </a>
+          ` : ''}
+
+          ${lead.website ? `
+            <a href="${escapeHtml(lead.website)}" target="_blank" class="channel-btn bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/20" title="Website (${lead.website})">
+              <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+            </a>
+          ` : ''}
+
+          ${lead.googleMaps ? `
+            <a href="${escapeHtml(lead.googleMaps.startsWith('http') ? lead.googleMaps : 'https://maps.google.com/?q=' + encodeURIComponent(lead.googleMaps))}" target="_blank" class="channel-btn bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20" title="Google Maps (${lead.googleMaps})">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+            </a>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    // Render Kanban Cards
+    function renderKanban(list) {
+      const colNew = document.getElementById('colNew');
+      const colContacted = document.getElementById('colContacted');
+      const colFu1 = document.getElementById('colFu1');
+      const colFu2 = document.getElementById('colFu2');
+      const colFinal = document.getElementById('colFinal');
+
+      const groups = { new: [], contacted: [], fu1: [], fu2: [], final: [] };
+
+      list.forEach(lead => {
+        if (lead.contacted === 'Replied' || lead.contacted === 'Not Interested' || lead.followup2Status === 'Closed') {
+          groups.final.push(lead);
+        } else if (lead.followup1Status === 'Sent' && lead.followup2Status === 'Pending') {
+          groups.fu2.push(lead);
+        } else if (lead.contacted !== 'No' && lead.followup1Status === 'Pending') {
+          groups.fu1.push(lead);
+        } else if (lead.contacted !== 'No') {
+          groups.contacted.push(lead);
+        } else {
+          groups.new.push(lead);
+        }
+      });
+
+      document.getElementById('badgeColNew').innerText = groups.new.length;
+      document.getElementById('badgeColContacted').innerText = groups.contacted.length;
+      document.getElementById('badgeColFu1').innerText = groups.fu1.length;
+      document.getElementById('badgeColFu2').innerText = groups.fu2.length;
+      document.getElementById('badgeColFinal').innerText = groups.final.length;
+
+      colNew.innerHTML = renderKanbanCol(groups.new, 'new');
+      colContacted.innerHTML = renderKanbanCol(groups.contacted, 'contacted');
+      colFu1.innerHTML = renderKanbanCol(groups.fu1, 'fu1');
+      colFu2.innerHTML = renderKanbanCol(groups.fu2, 'fu2');
+      colFinal.innerHTML = renderKanbanCol(groups.final, 'final');
+    }
+
+    function renderKanbanCol(colLeads, stage) {
+      if (colLeads.length === 0) {
+        return `<div class="h-28 border border-dashed border-white/[0.04] rounded-xl flex items-center justify-center text-[11px] text-zinc-400 select-none">Empty stage</div>`;
+      }
+
+      return colLeads.map(lead => {
+        let nextActionBtn = '';
+        if (stage === 'new') {
+          nextActionBtn = `<button onclick="event.stopPropagation(); advanceStage(${lead.rowIndex}, 'contacted')" class="px-2 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold shadow-sm transition">Mark Contacted →</button>`;
+        } else if (stage === 'contacted' || stage === 'fu1') {
+          nextActionBtn = `<button onclick="event.stopPropagation(); advanceStage(${lead.rowIndex}, 'fu1_sent')" class="px-2 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold transition">Sent Rem 1 →</button>`;
+        } else if (stage === 'fu2') {
+          nextActionBtn = `<button onclick="event.stopPropagation(); advanceStage(${lead.rowIndex}, 'fu2_sent')" class="px-2 py-1 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30 text-[10px] font-bold transition">Sent Rem 2 →</button>`;
+        }
 
         return `
-          <div class="bg-[#10172a] border ${isReplied ? 'border-emerald-500/40 bg-emerald-950/10' : (isClosed ? 'border-slate-800/60 opacity-70' : 'border-slate-800')} rounded-2xl p-5 shadow-sm space-y-4 transition hover:border-slate-700">
-            
-            <!-- TOP CARD ROW -->
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-              <div>
-                <div class="flex flex-wrap items-center gap-2">
-                  <h3 class="font-bold text-base text-white tracking-tight">${escapeHtml(lead.companyName)}</h3>
-                  <span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">${escapeHtml(lead.industry)}</span>
-                  <span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">${escapeHtml(lead.estimatedEmployees)}</span>
-                  ${lead.dateAdded ? `<span class="text-[11px] text-slate-500">Added: ${lead.dateAdded}</span>` : ''}
-                </div>
-                <div class="text-xs text-slate-400 mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
-                  <span>📍 ${escapeHtml(lead.location)}</span>
-                  <span>👤 <strong class="text-slate-200">${escapeHtml(lead.decisionMakerName)}</strong> (${escapeHtml(lead.designation)})</span>
-                </div>
+          <div draggable="true" ondragstart="handleDragStart(event, ${lead.rowIndex})" ondragend="handleDragEnd(event)" onclick="openDrawer(${lead.rowIndex})" class="kanban-card linear-card rounded-xl p-3.5 space-y-3 cursor-grab active:cursor-grabbing transition shadow-sm">
+            <div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-[9px] font-bold uppercase tracking-wider text-indigo-400 truncate">${escapeHtml(lead.industry.split('&')[0])}</span>
+                <span class="text-[9px] text-zinc-400 bg-zinc-800/80 px-1.5 py-0.2 rounded font-mono">${escapeHtml(lead.estimatedEmployees)}</span>
               </div>
-
-              <!-- OUTREACH CHANNELS BUTTONS -->
-              <div class="flex flex-wrap items-center gap-2">
-                ${cleanWhatsApp ? `
-                  <a href="https://wa.me/${cleanWhatsApp}?text=${whatsappPitch}" target="_blank" onclick="markContactedDirect(${lead.rowIndex}, 'Yes - WhatsApp')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-semibold transition">
-                    <span>💬 WhatsApp</span>
-                  </a>
-                ` : ''}
-
-                ${lead.email ? `
-                  <a href="mailto:${escapeHtml(lead.email)}?subject=DaftarHub%20for%20${encodeURIComponent(lead.companyName)}&body=${emailPitch}" target="_blank" onclick="markContactedDirect(${lead.rowIndex}, 'Yes - Email')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 text-xs font-semibold transition">
-                    <span>✉️ Email</span>
-                  </a>
-                ` : ''}
-
-                ${lead.phone ? `
-                  <a href="tel:${escapeHtml(lead.phone)}" class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition" title="Call">
-                    <span>📞 ${escapeHtml(lead.phone)}</span>
-                  </a>
-                ` : ''}
-
-                ${lead.decisionMakerLinkedIn ? `
-                  <a href="${escapeHtml(lead.decisionMakerLinkedIn)}" target="_blank" class="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition" title="LinkedIn / Profile">
-                    <svg class="w-4 h-4 text-sky-400" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                  </a>
-                ` : ''}
-
-                ${lead.website ? `
-                  <a href="${escapeHtml(lead.website)}" target="_blank" class="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition" title="Website">
-                    <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                  </a>
-                ` : ''}
+              <h4 class="font-bold text-xs text-white mt-1 tracking-tight">${escapeHtml(lead.companyName)}</h4>
+              <div class="text-[11px] text-zinc-400 mt-1 flex items-center gap-1.5">
+                <i data-lucide="user" class="w-3 h-3 text-zinc-400"></i>
+                <strong class="text-zinc-200">${escapeHtml(lead.decisionMakerName)}</strong>
+                <span class="text-zinc-400">(${escapeHtml(lead.designation)})</span>
+              </div>
+              <div class="text-[10px] text-zinc-400 mt-0.5 flex items-center gap-1">
+                <i data-lucide="map-pin" class="w-2.5 h-2.5 text-zinc-400"></i>
+                <span>${escapeHtml(lead.location.split(',')[0])}</span>
               </div>
             </div>
 
-            <!-- DAFTARHUB FIT & PITCH DRAWER -->
-            <div class="bg-[#0b101e] border border-slate-800/80 rounded-xl p-3 text-xs space-y-1">
-              <div class="font-semibold text-slate-300 flex items-center justify-between">
-                <span>🎯 Pitch Angle & Fit Analysis</span>
-                <span class="text-[11px] text-indigo-400 font-normal">Customized for DaftarHub</span>
-              </div>
-              <p class="text-slate-400 leading-relaxed">${escapeHtml(lead.daftarHubFit)}</p>
+            <!-- ALL SOCIAL CHANNELS RIBBON -->
+            <div class="pt-2 border-t border-white/[0.04]">
+              <div class="text-[9px] uppercase tracking-wider font-bold text-zinc-400 mb-1.5">Available Channels:</div>
+              ${renderChannelsRibbon(lead)}
             </div>
 
-            <!-- PIPELINE TRACKING CONTROLS -->
-            <div class="border-t border-slate-800/80 pt-3 flex flex-wrap items-center justify-between gap-3">
-              
-              <!-- STAGE STEPPERS -->
-              <div class="flex flex-wrap items-center gap-2">
-                
-                <!-- 1. Contacted Status -->
-                <div class="flex items-center gap-1.5 bg-[#141d36] border border-slate-700/80 rounded-xl px-2.5 py-1">
-                  <span class="text-[11px] font-semibold text-slate-400">1. Initial Contact:</span>
-                  <select onchange="updateLeadField(${lead.rowIndex}, 'contacted', this.value)" class="bg-transparent text-xs text-white font-medium focus:outline-none cursor-pointer">
-                    <option value="No" class="bg-slate-900" ${lead.contacted === 'No' ? 'selected' : ''}>⏳ Not Contacted</option>
-                    <option value="Yes - WhatsApp" class="bg-slate-900" ${lead.contacted === 'Yes - WhatsApp' ? 'selected' : ''}>✅ WhatsApp Sent</option>
-                    <option value="Yes - Email" class="bg-slate-900" ${lead.contacted === 'Yes - Email' ? 'selected' : ''}>✅ Email Sent</option>
-                    <option value="Yes - LinkedIn" class="bg-slate-900" ${lead.contacted === 'Yes - LinkedIn' ? 'selected' : ''}>✅ LinkedIn Sent</option>
-                    <option value="Yes - Phone" class="bg-slate-900" ${lead.contacted === 'Yes - Phone' ? 'selected' : ''}>✅ Called</option>
-                    <option value="Replied" class="bg-slate-900" ${lead.contacted === 'Replied' ? 'selected' : ''}>🎉 Replied / Interested</option>
-                    <option value="Not Interested" class="bg-slate-900" ${lead.contacted === 'Not Interested' ? 'selected' : ''}>❌ Not Interested</option>
-                  </select>
-                </div>
-
-                <!-- 2. Follow-up 1 (Reminder 1) -->
-                <button onclick="toggleFollowup(${lead.rowIndex}, 1)" class="flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold transition ${isFu1Sent ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30' : (isContacted ? 'bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700' : 'bg-slate-900 text-slate-600 border border-slate-800 cursor-not-allowed')}">
-                  <span>${isFu1Sent ? '✓' : '○'} Reminder 1</span>
-                  ${lead.followup1Date ? `<span class="text-[10px] text-slate-400">(${lead.followup1Date})</span>` : ''}
-                </button>
-
-                <!-- 3. Follow-up 2 (Reminder 2) -->
-                <button onclick="toggleFollowup(${lead.rowIndex}, 2)" class="flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold transition ${isFu2Sent ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' : (isFu1Sent ? 'bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700' : 'bg-slate-900 text-slate-600 border border-slate-800 cursor-not-allowed')}">
-                  <span>${isFu2Sent ? '✓' : '○'} Reminder 2</span>
-                  ${lead.followup2Date ? `<span class="text-[10px] text-slate-400">(${lead.followup2Date})</span>` : ''}
-                </button>
-              </div>
-
-              <!-- OUTCOME ACTIONS -->
-              <div class="flex items-center gap-2">
-                <button onclick="markOutcome(${lead.rowIndex}, 'Replied')" class="px-2.5 py-1 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-semibold transition" title="Mark as Replied">
-                  🎉 Replied
-                </button>
-                <button onclick="markOutcome(${lead.rowIndex}, 'Not Interested')" class="px-2.5 py-1 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-semibold transition" title="Mark as Not Interested / Didn't Reply">
-                  ✕ No Reply
-                </button>
-              </div>
-
+            <!-- Footer Action -->
+            <div class="flex items-center justify-between pt-1">
+              <span class="text-[10px] text-zinc-400">Click to view details</span>
+              ${nextActionBtn}
             </div>
-
           </div>
         `;
       }).join('');
     }
 
-    // Direct WhatsApp / Email quick mark
-    function markContactedDirect(rowIndex, channel) {
-      updateLeadField(rowIndex, 'contacted', channel);
+    // Render Table View
+    function renderTable(list) {
+      const tbody = document.getElementById('tableBody');
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-zinc-400">No leads found in this view</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(lead => {
+        let statusBadge = '<span class="badge bg-zinc-800 text-zinc-300">New Lead</span>';
+        if (lead.contacted === 'Replied') statusBadge = '<span class="badge bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">Replied</span>';
+        else if (lead.contacted === 'Not Interested') statusBadge = '<span class="badge bg-rose-500/15 text-rose-400 border border-rose-500/25">No Reply</span>';
+        else if (lead.followup1Status === 'Sent' && lead.followup2Status === 'Pending') statusBadge = '<span class="badge bg-purple-500/15 text-purple-400 border border-purple-500/25">Reminder 2 Due</span>';
+        else if (lead.contacted !== 'No' && lead.followup1Status === 'Pending') statusBadge = '<span class="badge bg-amber-500/15 text-amber-400 border border-amber-500/25">Reminder 1 Due</span>';
+        else if (lead.contacted !== 'No') statusBadge = '<span class="badge bg-sky-500/15 text-sky-400 border border-sky-500/25">Contacted</span>';
+
+        return `
+          <tr onclick="openDrawer(${lead.rowIndex})" class="hover:bg-zinc-800/40 cursor-pointer transition">
+            <td class="py-3 px-4">
+              <div class="font-bold text-white text-xs">${escapeHtml(lead.companyName)}</div>
+              <div class="text-[11px] text-zinc-400">${escapeHtml(lead.industry)}</div>
+            </td>
+            <td class="py-3 px-4">
+              <div class="text-zinc-200 font-semibold">${escapeHtml(lead.decisionMakerName)}</div>
+              <div class="text-[11px] text-zinc-400">${escapeHtml(lead.designation)}</div>
+            </td>
+            <td class="py-3 px-4 text-zinc-400 text-[11px]">
+              ${escapeHtml(lead.location.split(',')[0])}
+            </td>
+            <td class="py-3 px-4" onclick="event.stopPropagation()">
+              ${renderChannelsRibbon(lead)}
+            </td>
+            <td class="py-3 px-4">
+              ${statusBadge}
+            </td>
+            <td class="py-3 px-4 text-[11px] text-zinc-400 font-mono">
+              ${lead.followup1Status === 'Sent' ? '✓ Rem 1' : '○ Rem 1'} &bull; ${lead.followup2Status === 'Sent' ? '✓ Rem 2' : '○ Rem 2'}
+            </td>
+            <td class="py-3 px-4 text-right" onclick="event.stopPropagation()">
+              <button onclick="openDrawer(${lead.rowIndex})" class="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-semibold text-[11px] transition">
+                Manage ➔
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
     }
 
-    // Toggle Follow-up 1 or 2
-    function toggleFollowup(rowIndex, stage) {
+    function advanceStage(rowIndex, action) {
       const lead = leads.find(l => l.rowIndex === rowIndex);
       if (!lead) return;
 
       const today = new Date().toISOString().split('T')[0];
 
+      if (action === 'contacted') {
+        lead.contacted = 'Yes - WhatsApp';
+        lead.contactDate = today;
+        syncRowToSheet(lead, { contacted: lead.contacted, contactDate: today });
+        showToast(`Marked ${lead.companyName} as Contacted`);
+      } else if (action === 'fu1_sent') {
+        lead.followup1Status = 'Sent';
+        lead.followup1Date = today;
+        syncRowToSheet(lead, { followup1Status: 'Sent', followup1Date: today });
+        showToast(`Sent Reminder 1 for ${lead.companyName}`);
+      } else if (action === 'fu2_sent') {
+        lead.followup2Status = 'Sent';
+        lead.followup2Date = today;
+        syncRowToSheet(lead, { followup2Status: 'Sent', followup2Date: today });
+        showToast(`Sent Reminder 2 for ${lead.companyName}`);
+      }
+
+      saveCache();
+    }
+
+    function openDrawer(rowIndex) {
+      const lead = leads.find(l => l.rowIndex === rowIndex);
+      if (!lead) return;
+      selectedLead = lead;
+
+      document.getElementById('drawerCategory').innerText = lead.industry;
+      document.getElementById('drawerCompanyName').innerText = lead.companyName;
+      document.getElementById('drawerFounderName').innerText = lead.decisionMakerName;
+      document.getElementById('drawerDesignation').innerText = `(${lead.designation})`;
+      document.getElementById('drawerLocation').innerText = lead.location;
+      document.getElementById('drawerEmployees').innerText = lead.estimatedEmployees;
+      document.getElementById('drawerPitchText').innerText = lead.daftarHubFit;
+      document.getElementById('drawerNotes').value = lead.notes || '';
+
+      const cleanWA = (lead.whatsapp || lead.phone || '').replace(/[^0-9]/g, '');
+      const waPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'}, noticed ${lead.companyName}'s work in ${lead.location.split(',')[0]}! We built DaftarHub to eliminate scattered spreadsheets for agency attendance, leaves, and sprint milestones. Would love to share a quick 2-min demo.`);
+      const emailPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'},\n\nWe built DaftarHub specifically as an all-in-one operating system for Pakistani professional services and agencies.\n\nWould you be open to a quick 5-min demo this week?`);
+
+      document.getElementById('drawerWhatsAppBtn').href = cleanWA ? `https://wa.me/${cleanWA}?text=${waPitch}` : '#';
+      document.getElementById('drawerEmailBtn').href = lead.email ? `mailto:${lead.email}?subject=DaftarHub%20for%20${encodeURIComponent(lead.companyName)}&body=${emailPitch}` : '#';
+
+      // Build Complete Channels Grid in Drawer
+      const channelsGrid = document.getElementById('drawerChannelsGrid');
+      channelsGrid.innerHTML = `
+        <!-- WhatsApp -->
+        <a href="${cleanWA ? 'https://wa.me/' + cleanWA + '?text=' + waPitch : '#'}" target="_blank" class="p-2.5 rounded-xl border ${cleanWA ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20' : 'bg-zinc-900 border-white/[0.04] text-zinc-400 opacity-60 pointer-events-none'} flex items-center justify-between transition">
+          <div class="flex items-center gap-2">
+            <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400"></i>
+            <div>
+              <div class="text-[11px] font-bold text-white">WhatsApp</div>
+              <div class="text-[10px] text-zinc-400 truncate">${lead.whatsapp || 'Not listed'}</div>
+            </div>
+          </div>
+          <i data-lucide="external-link" class="w-3 h-3 text-zinc-400"></i>
+        </a>
+
+        <!-- Email -->
+        <a href="${lead.email ? 'mailto:' + lead.email + '?subject=DaftarHub%20for%20' + encodeURIComponent(lead.companyName) + '&body=' + emailPitch : '#'}" target="_blank" class="p-2.5 rounded-xl border ${lead.email ? 'bg-sky-500/10 border-sky-500/30 text-sky-300 hover:bg-sky-500/20' : 'bg-zinc-900 border-white/[0.04] text-zinc-400 opacity-60 pointer-events-none'} flex items-center justify-between transition">
+          <div class="flex items-center gap-2">
+            <i data-lucide="mail" class="w-4 h-4 text-sky-400"></i>
+            <div>
+              <div class="text-[11px] font-bold text-white">Email</div>
+              <div class="text-[10px] text-zinc-400 truncate">${lead.email || 'Not listed'}</div>
+            </div>
+          </div>
+          <i data-lucide="external-link" class="w-3 h-3 text-zinc-400"></i>
+        </a>
+
+        <!-- Phone Call -->
+        <a href="${lead.phone ? 'tel:' + lead.phone : '#'}" class="p-2.5 rounded-xl border ${lead.phone ? 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20' : 'bg-zinc-900 border-white/[0.04] text-zinc-400 opacity-60 pointer-events-none'} flex items-center justify-between transition">
+          <div class="flex items-center gap-2">
+            <i data-lucide="phone" class="w-4 h-4 text-amber-400"></i>
+            <div>
+              <div class="text-[11px] font-bold text-white">Direct Phone</div>
+              <div class="text-[10px] text-zinc-400 truncate">${lead.phone || 'Not listed'}</div>
+            </div>
+          </div>
+          <i data-lucide="phone-call" class="w-3 h-3 text-zinc-400"></i>
+        </a>
+
+        <!-- Founder LinkedIn / Personal Site -->
+        <a href="${lead.decisionMakerLinkedIn ? lead.decisionMakerLinkedIn : '#'}" target="_blank" class="p-2.5 rounded-xl border ${lead.decisionMakerLinkedIn ? 'bg-blue-500/10 border-blue-500/30 text-blue-300 hover:bg-blue-500/20' : 'bg-zinc-900 border-white/[0.04] text-zinc-400 opacity-60 pointer-events-none'} flex items-center justify-between transition">
+          <div class="flex items-center gap-2">
+            <i data-lucide="linkedin" class="w-4 h-4 text-blue-400"></i>
+            <div>
+              <div class="text-[11px] font-bold text-white">Founder LinkedIn</div>
+              <div class="text-[10px] text-zinc-400 truncate">Personal Profile</div>
+            </div>
+          </div>
+          <i data-lucide="external-link" class="w-3 h-3 text-zinc-400"></i>
+        </a>
+
+        <!-- Company LinkedIn -->
+        <a href="${lead.companyLinkedIn ? lead.companyLinkedIn : '#'}" target="_blank" class="p-2.5 rounded-xl border ${lead.companyLinkedIn ? 'bg-blue-600/10 border-blue-600/30 text-blue-300 hover:bg-blue-600/20' : 'bg-zinc-900 border-white/[0.04] text-zinc-400 opacity-60 pointer-events-none'} flex items-center justify-between transition">
+          <div class="flex items-center gap-2">
+            <i data-lucide="briefcase" class="w-4 h-4 text-blue-400"></i>
+            <div>
+              <div class="text-[11px] font-bold text-white">Company LinkedIn</div>
+              <div class="text-[10px] text-zinc-400 truncate">Page</div>
+            </div>
+          </div>
+          <i data-lucide="external-link" class="w-3 h-3 text-zinc-400"></i>
+        </a>
+
+        <!-- Instagram -->
+        <a href="${lead.instagram ? lead.instagram : '#'}" target="_blank" class="p-2.5 rounded-xl border ${lead.instagram ? 'bg-pink-500/10 border-pink-500/30 text-pink-300 hover:bg-pink-500/20' : 'bg-zinc-900 border-white/[0.04] text-zinc-400 opacity-60 pointer-events-none'} flex items-center justify-between transition">
+          <div class="flex items-center gap-2">
+            <i data-lucide="instagram" class="w-4 h-4 text-pink-400"></i>
+            <div>
+              <div class="text-[11px] font-bold text-white">Instagram</div>
+              <div class="text-[10px] text-zinc-400 truncate">Business Profile</div>
+            </div>
+          </div>
+          <i data-lucide="external-link" class="w-3 h-3 text-zinc-400"></i>
+        </a>
+
+        <!-- Facebook -->
+        <a href="${lead.facebook ? lead.facebook : '#'}" target="_blank" class="p-2.5 rounded-xl border ${lead.facebook ? 'bg-blue-700/10 border-blue-700/30 text-blue-300 hover:bg-blue-700/20' : 'bg-zinc-900 border-white/[0.04] text-zinc-400 opacity-60 pointer-events-none'} flex items-center justify-between transition">
+          <div class="flex items-center gap-2">
+            <i data-lucide="facebook" class="w-4 h-4 text-blue-500"></i>
+            <div>
+              <div class="text-[11px] font-bold text-white">Facebook</div>
+              <div class="text-[10px] text-zinc-400 truncate">Business Page</div>
+            </div>
+          </div>
+          <i data-lucide="external-link" class="w-3 h-3 text-zinc-400"></i>
+        </a>
+
+        <!-- Website -->
+        <a href="${lead.website ? lead.website : '#'}" target="_blank" class="p-2.5 rounded-xl border ${lead.website ? 'bg-indigo-500/10 border-indigo-500/30 text-indigo-300 hover:bg-indigo-500/20' : 'bg-zinc-900 border-white/[0.04] text-zinc-400 opacity-60 pointer-events-none'} flex items-center justify-between transition">
+          <div class="flex items-center gap-2">
+            <i data-lucide="globe" class="w-4 h-4 text-indigo-400"></i>
+            <div>
+              <div class="text-[11px] font-bold text-white">Website</div>
+              <div class="text-[10px] text-zinc-400 truncate">Official Site</div>
+            </div>
+          </div>
+          <i data-lucide="external-link" class="w-3 h-3 text-zinc-400"></i>
+        </a>
+
+        <!-- Google Maps -->
+        <a href="${lead.googleMaps ? (lead.googleMaps.startsWith('http') ? lead.googleMaps : 'https://maps.google.com/?q=' + encodeURIComponent(lead.googleMaps)) : '#'}" target="_blank" class="p-2.5 rounded-xl border ${lead.googleMaps ? 'bg-rose-500/10 border-rose-500/30 text-rose-300 hover:bg-rose-500/20' : 'bg-zinc-900 border-white/[0.04] text-zinc-400 opacity-60 pointer-events-none'} flex items-center justify-between transition">
+          <div class="flex items-center gap-2">
+            <i data-lucide="map-pin" class="w-4 h-4 text-rose-400"></i>
+            <div>
+              <div class="text-[11px] font-bold text-white">Google Maps</div>
+              <div class="text-[10px] text-zinc-400 truncate">Office Pin</div>
+            </div>
+          </div>
+          <i data-lucide="external-link" class="w-3 h-3 text-zinc-400"></i>
+        </a>
+      `;
+
+      document.getElementById('drawerContactedSelect').value = lead.contacted || 'No';
+
+      document.getElementById('step1Icon').innerText = lead.contacted !== 'No' ? '✓' : '1';
+      document.getElementById('step1Desc').innerText = lead.contactDate ? `Sent on ${lead.contactDate}` : 'Uncontacted';
+
+      document.getElementById('step2Icon').innerText = lead.followup1Status === 'Sent' ? '✓' : '2';
+      document.getElementById('step2Desc').innerText = lead.followup1Date ? `Sent on ${lead.followup1Date}` : 'Scheduled in 3 days';
+
+      document.getElementById('step3Icon').innerText = lead.followup2Status === 'Sent' ? '✓' : '3';
+      document.getElementById('step3Desc').innerText = lead.followup2Date ? `Sent on ${lead.followup2Date}` : 'Scheduled in 6 days';
+
+      document.getElementById('leadDrawerBackdrop').classList.remove('hidden');
+      document.getElementById('leadDrawer').classList.remove('translate-x-full');
+      lucide.createIcons();
+    }
+
+    function closeDrawer() {
+      document.getElementById('leadDrawerBackdrop').classList.add('hidden');
+      document.getElementById('leadDrawer').classList.add('translate-x-full');
+      selectedLead = null;
+    }
+
+    function drawerUpdateStatus(status) {
+      if (!selectedLead) return;
+      selectedLead.contacted = status;
+      if (status !== 'No') selectedLead.contactDate = new Date().toISOString().split('T')[0];
+      syncRowToSheet(selectedLead, { contacted: status, contactDate: selectedLead.contactDate });
+      saveCache();
+      openDrawer(selectedLead.rowIndex);
+      showToast(`Updated status to ${status}`);
+    }
+
+    function drawerToggleFollowup(stage) {
+      if (!selectedLead) return;
+      const today = new Date().toISOString().split('T')[0];
       if (stage === 1) {
-        const nextStatus = lead.followup1Status === 'Sent' ? 'Pending' : 'Sent';
-        lead.followup1Status = nextStatus;
-        lead.followup1Date = nextStatus === 'Sent' ? today : '';
-        syncRowToSheet(lead, { followup1Status: nextStatus, followup1Date: lead.followup1Date });
+        selectedLead.followup1Status = selectedLead.followup1Status === 'Sent' ? 'Pending' : 'Sent';
+        selectedLead.followup1Date = selectedLead.followup1Status === 'Sent' ? today : '';
+        syncRowToSheet(selectedLead, { followup1Status: selectedLead.followup1Status, followup1Date: selectedLead.followup1Date });
       } else if (stage === 2) {
-        const nextStatus = lead.followup2Status === 'Sent' ? 'Pending' : 'Sent';
-        lead.followup2Status = nextStatus;
-        lead.followup2Date = nextStatus === 'Sent' ? today : '';
-        syncRowToSheet(lead, { followup2Status: nextStatus, followup2Date: lead.followup2Date });
+        selectedLead.followup2Status = selectedLead.followup2Status === 'Sent' ? 'Pending' : 'Sent';
+        selectedLead.followup2Date = selectedLead.followup2Status === 'Sent' ? today : '';
+        syncRowToSheet(selectedLead, { followup2Status: selectedLead.followup2Status, followup2Date: selectedLead.followup2Date });
       }
-
       saveCache();
-      showToast(`Updated Reminder ${stage} for ${lead.companyName}`);
+      openDrawer(selectedLead.rowIndex);
+      showToast(`Updated Follow-Up ${stage}`);
     }
 
-    // Mark Outcome (Replied or No Reply)
-    function markOutcome(rowIndex, outcome) {
-      const lead = leads.find(l => l.rowIndex === rowIndex);
-      if (!lead) return;
-
-      lead.contacted = outcome;
+    function drawerSetOutcome(outcome) {
+      if (!selectedLead) return;
+      selectedLead.contacted = outcome;
       if (outcome === 'Not Interested') {
-        lead.followup1Status = 'Closed';
-        lead.followup2Status = 'Closed';
+        selectedLead.followup1Status = 'Closed';
+        selectedLead.followup2Status = 'Closed';
       }
-      syncRowToSheet(lead, { contacted: outcome, followup1Status: lead.followup1Status, followup2Status: lead.followup2Status });
+      syncRowToSheet(selectedLead, { contacted: outcome, followup1Status: selectedLead.followup1Status, followup2Status: selectedLead.followup2Status });
       saveCache();
-      showToast(`Marked ${lead.companyName} as ${outcome}`);
+      openDrawer(selectedLead.rowIndex);
+      showToast(`Marked as ${outcome}`);
     }
 
-    // Update single lead field
-    function updateLeadField(rowIndex, field, value) {
-      const lead = leads.find(l => l.rowIndex === rowIndex);
-      if (!lead) return;
-
-      lead[field] = value;
-      if (field === 'contacted' && value !== 'No') {
-        lead.contactDate = new Date().toISOString().split('T')[0];
-      }
-
-      const patch = { [field]: value };
-      if (lead.contactDate) patch.contactDate = lead.contactDate;
-
-      syncRowToSheet(lead, patch);
+    function drawerSaveNotes(text) {
+      if (!selectedLead) return;
+      selectedLead.notes = text;
+      syncRowToSheet(selectedLead, { notes: text });
       saveCache();
-      showToast(`Updated ${lead.companyName}`);
+      showToast("Notes saved to Sheet");
     }
 
-    // Sync to Google Sheet via Web App (doPost)
+    function copyPitchText() {
+      if (!selectedLead) return;
+      navigator.clipboard.writeText(selectedLead.daftarHubFit);
+      showToast("Pitch copied to clipboard!");
+    }
+
+    function toggleCommandPalette() {
+      const el = document.getElementById('cmdPalette');
+      if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        document.getElementById('cmdInput').focus();
+        renderCommandResults();
+      } else {
+        closeCommandPalette();
+      }
+    }
+
+    function closeCommandPalette() {
+      document.getElementById('cmdPalette').classList.add('hidden');
+    }
+
+    function renderCommandResults() {
+      const q = (document.getElementById('cmdInput').value || '').toLowerCase().trim();
+      const container = document.getElementById('cmdResults');
+
+      let html = '';
+      leads.forEach(l => {
+        if (!q || l.companyName.toLowerCase().includes(q) || l.decisionMakerName.toLowerCase().includes(q)) {
+          html += `
+            <div onclick="openDrawer(${l.rowIndex}); closeCommandPalette();" class="p-2.5 rounded-lg hover:bg-zinc-800 cursor-pointer flex items-center justify-between text-zinc-300 hover:text-white transition">
+              <div>
+                <div class="font-bold text-xs">${escapeHtml(l.companyName)}</div>
+                <div class="text-[11px] text-zinc-400">${escapeHtml(l.decisionMakerName)} &bull; ${escapeHtml(l.industry)}</div>
+              </div>
+              <span class="badge bg-zinc-800 text-zinc-400 font-mono">${escapeHtml(l.contacted)}</span>
+            </div>
+          `;
+        }
+      });
+
+      if (!html) html = `<div class="p-4 text-center text-zinc-400 text-xs">No matching commands or leads</div>`;
+      container.innerHTML = html;
+    }
+
     function syncRowToSheet(lead, patch) {
-      if (!webAppUrl) {
-        console.log("Local cache updated (Web App URL not connected yet).");
-        return;
-      }
-
-      const payload = {
-        rowIndex: lead.rowIndex,
-        ...patch
-      };
-
+      if (!webAppUrl) return;
       fetch(webAppUrl, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-      .then(() => {
+        body: JSON.stringify({ rowIndex: lead.rowIndex, ...patch })
+      }).then(() => {
         showToast("Synced with Google Sheet ✓");
-      })
-      .catch(err => {
-        console.warn("Could not sync to Sheet:", err);
+      }).catch(err => {
+        console.warn(err);
       });
     }
 
-    // Fetch live rows from Google Sheet via Web App (doGet)
     function fetchSheetData() {
-      if (!webAppUrl) {
-        document.getElementById('syncStatusText').innerText = "Local Mode (Connect Web App URL)";
-        return;
-      }
-
-      document.getElementById('syncStatusText').innerText = "Fetching live sheet...";
-      
+      if (!webAppUrl) return;
       fetch(webAppUrl)
         .then(res => res.json())
         .then(data => {
           if (data && data.leads && data.leads.length > 0) {
             leads = data.leads;
             saveCache();
-            document.getElementById('syncStatusText').innerText = "Live Synced with Google Sheet";
-            showToast("Fetched fresh leads from Google Sheet!");
+            showToast("Fetched fresh leads from Sheet!");
           }
         })
-        .catch(err => {
-          console.warn("Fetch error:", err);
-          document.getElementById('syncStatusText').innerText = "Sync Error (Check Web App URL)";
-        });
+        .catch(err => console.warn(err));
     }
 
-    // Settings Modal
-    function openSettingsModal() {
-      document.getElementById('settingsModal').classList.remove('hidden');
-    }
-    function closeSettingsModal() {
-      document.getElementById('settingsModal').classList.add('hidden');
-    }
+    function openSettingsModal() { document.getElementById('settingsModal').classList.remove('hidden'); }
+    function closeSettingsModal() { document.getElementById('settingsModal').classList.add('hidden'); }
     function saveSettings() {
       const url = document.getElementById('webAppUrlInput').value.trim();
       webAppUrl = url;
@@ -667,49 +1456,19 @@
       if (url) fetchSheetData();
     }
 
-    // Show Toast
     function showToast(msg) {
       const toast = document.getElementById('toast');
       document.getElementById('toastMessage').innerText = msg;
       toast.classList.remove('translate-y-20', 'opacity-0');
-      setTimeout(() => {
-        toast.classList.add('translate-y-20', 'opacity-0');
-      }, 2500);
+      setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0'); }, 2200);
     }
 
-    // Helper HTML escape
     function escapeHtml(str) {
       if (!str) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
     }
 
-    // Run
     init();
-
-    // Auto-refresh every 30 seconds when online
-    setInterval(() => {
-      if (navigator.onLine && webAppUrl) {
-        fetchSheetData();
-      }
-    }, 30000);
-
-    // Auto-refresh whenever you switch back to this browser tab
-    window.addEventListener('focus', () => {
-      if (navigator.onLine && webAppUrl) {
-        fetchSheetData();
-      }
-    });
-
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden && navigator.onLine && webAppUrl) {
-        fetchSheetData();
-      }
-    });
   </script>
 </body>
 </html>
