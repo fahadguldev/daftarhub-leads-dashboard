@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DaftarHub — Sales & Outreach CRM</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            },
+            dark: {
+              950: '#070a12',
+              900: '#0c1120',
+              850: '#11182c',
+              800: '#172038',
+              700: '#233054',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0c1120; }
+    ::-webkit-scrollbar-thumb { background: #233054; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #374b80; }
+  </style>
+</head>
+<body class="bg-[#080c18] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- TOP HEADER -->
+  <header class="border-b border-slate-800/80 bg-[#0c1120]/90 backdrop-blur sticky top-0 z-40 px-6 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-3.5">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/25 font-black text-xl text-white">
+        D
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="font-bold text-lg text-white tracking-tight">DaftarHub</h1>
+          <span class="text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Outreach CRM</span>
+        </div>
+        <p class="text-xs text-slate-400">Daily Lead Pipeline & Automated Follow-Up Tracker</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <!-- Sync Status Pill -->
+      <div id="syncStatusPill" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-400 font-medium">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="syncStatusText">Synced with Google Sheet</span>
+      </div>
+
+      <!-- Open Sheet Link -->
+      <a href="https://docs.google.com/spreadsheets/d/1AiuP1lstXRkSq-WR7nt5HBICgsNQzkxYriXWdu93Wps/edit" target="_blank" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-medium text-slate-200 transition">
+        <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 7h10v2H7zm0 4h10v2H7zm0 4h7v2H7z"/>
+        </svg>
+        <span>Open Sheet</span>
+      </a>
+
+      <!-- Settings / Connect Button -->
+      <button onclick="openSettingsModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition shadow-sm shadow-indigo-600/30">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
+        <span>API Settings</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-6">
+
+    <!-- KPI STATS GRID -->
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+      <!-- Total Leads -->
+      <div class="bg-[#10172a] border border-slate-800 rounded-xl p-3.5 shadow-sm">
+        <div class="flex items-center justify-between text-slate-400 mb-1">
+          <span class="text-xs font-medium">Total Leads</span>
+          <span class="text-[10px] bg-indigo-500/10 text-indigo-400 font-semibold px-1.5 py-0.5 rounded">+2 Daily</span>
+        </div>
+        <div id="statTotal" class="text-2xl font-bold text-white tracking-tight">0</div>
+        <div class="text-[11px] text-slate-500 mt-1">Pakistan agencies</div>
+      </div>
+
+      <!-- Contacted -->
+      <div class="bg-[#10172a] border border-slate-800 rounded-xl p-3.5 shadow-sm">
+        <div class="flex items-center justify-between text-slate-400 mb-1">
+          <span class="text-xs font-medium">Contacted</span>
+          <span id="statContactedRate" class="text-[10px] text-emerald-400 font-semibold">0%</span>
+        </div>
+        <div id="statContacted" class="text-2xl font-bold text-emerald-400 tracking-tight">0</div>
+        <div class="text-[11px] text-slate-500 mt-1">Outreached leads</div>
+      </div>
+
+      <!-- Needs Follow-up Today -->
+      <div class="bg-gradient-to-br from-amber-500/10 to-orange-500/5 border border-amber-500/30 rounded-xl p-3.5 shadow-sm">
+        <div class="flex items-center justify-between text-amber-300 mb-1">
+          <span class="text-xs font-semibold flex items-center gap-1">
+            <span>🔥 Action Today</span>
+          </span>
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+        </div>
+        <div id="statDueToday" class="text-2xl font-bold text-amber-300 tracking-tight">0</div>
+        <div class="text-[11px] text-amber-400/80 mt-1">Needs reminder today</div>
+      </div>
+
+      <!-- Follow-up 1 Due -->
+      <div class="bg-[#10172a] border border-slate-800 rounded-xl p-3.5 shadow-sm">
+        <div class="text-xs font-medium text-slate-400 mb-1">Follow-up 1 Due</div>
+        <div id="statFollowup1" class="text-2xl font-bold text-sky-400 tracking-tight">0</div>
+        <div class="text-[11px] text-slate-500 mt-1">1st reminder queue</div>
+      </div>
+
+      <!-- Follow-up 2 Due -->
+      <div class="bg-[#10172a] border border-slate-800 rounded-xl p-3.5 shadow-sm">
+        <div class="text-xs font-medium text-slate-400 mb-1">Follow-up 2 Due</div>
+        <div id="statFollowup2" class="text-2xl font-bold text-purple-400 tracking-tight">0</div>
+        <div class="text-[11px] text-slate-500 mt-1">2nd reminder queue</div>
+      </div>
+
+      <!-- Replied / Interested -->
+      <div class="bg-[#10172a] border border-slate-800 rounded-xl p-3.5 shadow-sm">
+        <div class="text-xs font-medium text-slate-400 mb-1">Replied / Won</div>
+        <div id="statReplied" class="text-2xl font-bold text-emerald-300 tracking-tight">0</div>
+        <div class="text-[11px] text-slate-500 mt-1">Active discussions</div>
+      </div>
+
+      <!-- Closed / No Reply -->
+      <div class="bg-[#10172a] border border-slate-800 rounded-xl p-3.5 shadow-sm">
+        <div class="text-xs font-medium text-slate-400 mb-1">Closed / No Reply</div>
+        <div id="statNoReply" class="text-2xl font-bold text-slate-400 tracking-tight">0</div>
+        <div class="text-[11px] text-slate-500 mt-1">Archived prospects</div>
+      </div>
+    </div>
+
+    <!-- FILTER & PIPELINE BAR -->
+    <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between bg-[#0e1424] border border-slate-800/90 rounded-2xl p-2.5">
+      <!-- Tabs -->
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0" id="filterTabs">
+        <button onclick="setFilter('all')" data-tab="all" class="filter-btn active-tab px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-indigo-600 text-white shadow-sm">
+          All Leads (<span id="countAll">0</span>)
+        </button>
+        <button onclick="setFilter('needs_action')" data-tab="needs_action" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white">
+          🔥 Needs Follow-up Today (<span id="countAction">0</span>)
+        </button>
+        <button onclick="setFilter('uncontacted')" data-tab="uncontacted" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white">
+          Not Contacted (<span id="countUncontacted">0</span>)
+        </button>
+        <button onclick="setFilter('fu1')" data-tab="fu1" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white">
+          1st Reminder (<span id="countFu1">0</span>)
+        </button>
+        <button onclick="setFilter('fu2')" data-tab="fu2" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white">
+          2nd Reminder (<span id="countFu2">0</span>)
+        </button>
+        <button onclick="setFilter('replied')" data-tab="replied" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white">
+          Replied (<span id="countReplied">0</span>)
+        </button>
+        <button onclick="setFilter('noreply')" data-tab="noreply" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white">
+          No Reply (<span id="countNoReply">0</span>)
+        </button>
+      </div>
+
+      <!-- Search & Refresh -->
+      <div class="flex items-center gap-2">
+        <div class="relative flex-1 md:w-64">
+          <input type="text" id="searchInput" oninput="renderLeads()" placeholder="Search company, founder, city..." class="w-full bg-[#121a2f] border border-slate-700/80 rounded-xl px-3 py-1.5 pl-8 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition">
+          <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+        <button onclick="fetchSheetData()" title="Refresh from Sheet" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- LEADS LIST CONTAINER -->
+    <div id="leadsContainer" class="space-y-4">
+      <!-- Dynamic Lead Cards injected here -->
+    </div>
+
+  </main>
+
+  <!-- SETTINGS MODAL -->
+  <div id="settingsModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#0f172a] border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="font-bold text-base text-white flex items-center gap-2">
+          <span>Google Sheet Two-Way Sync</span>
+        </h3>
+        <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white text-lg leading-none">&times;</button>
+      </div>
+
+      <p class="text-xs text-slate-300 leading-relaxed">
+        To allow this dashboard to directly update rows in your Google Sheet when you tick follow-up buttons, deploy the provided Google Apps Script as a Web App:
+      </p>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2 text-xs">
+        <div class="font-semibold text-slate-200">3-Step Quick Connection:</div>
+        <ol class="list-decimal list-inside text-slate-400 space-y-1">
+          <li>In your Google Sheet, click <strong class="text-slate-200">Extensions &gt; Apps Script</strong>.</li>
+          <li>Paste the code from <code class="text-indigo-400">Code.gs</code> (already saved in your project folder).</li>
+          <li>Click <strong class="text-slate-200">Deploy &gt; New deployment &gt; Web app</strong> (Access: <em>Anyone</em>), then paste the Web App URL below:</li>
+        </ol>
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Google Apps Script Web App URL</label>
+        <input type="url" id="webAppUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-[#16213b] border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono">
+      </div>
+
+      <div class="flex items-center justify-between pt-2">
+        <button onclick="saveSettings()" class="w-full py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition">
+          Save & Connect
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-300 bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-xl text-xs font-semibold flex items-center gap-2 z-50">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+    </svg>
+    <span id="toastMessage">Sheet updated successfully</span>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    // Initial Verified Leads from Sheet
+    const INITIAL_LEADS = [
+      {
+        rowIndex: 2,
+        companyName: "SolSvc (SOLsVC)",
+        industry: "Custom Software Development & Cloud Solutions",
+        location: "134-DD, 2nd Floor, Commercial Market, Sector CCA, DHA Phase 4, Lahore, Pakistan",
+        estimatedEmployees: "2–9 employees",
+        website: "https://solsvc.com",
+        googleMaps: "DHA Phase 4, Sector CCA Commercial Market, Lahore",
+        decisionMakerName: "Rizwan Rafiq",
+        designation: "Founder & CEO",
+        email: "hello@rizwanrafiq.com",
+        phone: "+92 333 6299109",
+        whatsapp: "+92 333 6299109",
+        decisionMakerLinkedIn: "https://rizwanrafiq.com",
+        companyLinkedIn: "https://www.linkedin.com/company/solsvc/",
+        instagram: "https://www.instagram.com/solsvc/",
+        facebook: "",
+        otherProfiles: "Clutch: https://clutch.co/profile/solsvc",
+        daftarHubFit: "Boutique dev agency managing custom client projects. Needs attendance, leave tracking, and project task management for office engineers in DHA Lahore.",
+        contacted: "No",
+        contactDate: "",
+        followup1Date: "",
+        followup1Status: "Pending",
+        followup2Date: "",
+        followup2Status: "Pending",
+        notes: "Priority 1: High intent tech studio",
+        dateAdded: "2026-10-30"
+      },
+      {
+        rowIndex: 3,
+        companyName: "Digital-Marketing.pk",
+        industry: "Digital Marketing, SEO & Web Development",
+        location: "Gulberg III, Lahore, Pakistan",
+        estimatedEmployees: "4–10 employees (estimated)",
+        website: "https://digital-marketing.pk",
+        googleMaps: "Gulberg III, Lahore, Pakistan",
+        decisionMakerName: "Junaid Tariq",
+        designation: "Founder & Lead Strategist",
+        email: "hello@digital-marketing.pk",
+        phone: "+92 333 9799025",
+        whatsapp: "+92 333 9799025",
+        decisionMakerLinkedIn: "https://junaidtariq.com",
+        companyLinkedIn: "",
+        instagram: "",
+        facebook: "https://www.facebook.com/DigitalMarketingPK",
+        otherProfiles: "SEOAudit: https://seoaudit.pk",
+        daftarHubFit: "Performance agency in Gulberg managing multiple client retainers. Needs team attendance and campaign milestone tracking.",
+        contacted: "No",
+        contactDate: "",
+        followup1Date: "",
+        followup1Status: "Pending",
+        followup2Date: "",
+        followup2Status: "Pending",
+        notes: "Priority 2: Founder-led marketing boutique",
+        dateAdded: "2026-10-30"
+      }
+    ];
+
+    let leads = [];
+    let currentFilter = 'all';
+    let webAppUrl = localStorage.getItem('daftarhub_webapp_url') || '';
+
+    // Initialize
+    function init() {
+      const stored = localStorage.getItem('daftarhub_leads_cache');
+      if (stored) {
+        try { leads = JSON.parse(stored); } catch(e) { leads = [...INITIAL_LEADS]; }
+      } else {
+        leads = [...INITIAL_LEADS];
+      }
+      
+      if (webAppUrl) {
+        document.getElementById('webAppUrlInput').value = webAppUrl;
+        fetchSheetData();
+      }
+      
+      updateStats();
+      renderLeads();
+    }
+
+    // Save Leads to Cache
+    function saveCache() {
+      localStorage.setItem('daftarhub_leads_cache', JSON.stringify(leads));
+      updateStats();
+      renderLeads();
+    }
+
+    // Update Top KPI Counters
+    function updateStats() {
+      const total = leads.length;
+      const contacted = leads.filter(l => l.contacted && l.contacted !== 'No').length;
+      const replied = leads.filter(l => l.contacted === 'Replied' || (l.notes && l.notes.includes('Replied'))).length;
+      const noReply = leads.filter(l => l.contacted === 'Not Interested' || l.followup2Status === 'Closed' || l.followup1Status === 'Closed').length;
+      
+      const fu1Due = leads.filter(l => l.contacted !== 'No' && l.followup1Status === 'Pending' && l.contacted !== 'Replied' && l.contacted !== 'Not Interested').length;
+      const fu2Due = leads.filter(l => l.followup1Status === 'Sent' && l.followup2Status === 'Pending' && l.contacted !== 'Replied' && l.contacted !== 'Not Interested').length;
+      
+      // Due today: either uncontacted or pending followups
+      const dueToday = leads.filter(l => l.contacted === 'No' || (l.contacted !== 'No' && l.followup1Status === 'Pending')).length;
+
+      document.getElementById('statTotal').innerText = total;
+      document.getElementById('statContacted').innerText = contacted;
+      document.getElementById('statContactedRate').innerText = total > 0 ? Math.round((contacted / total) * 100) + '%' : '0%';
+      document.getElementById('statDueToday').innerText = dueToday;
+      document.getElementById('statFollowup1').innerText = fu1Due;
+      document.getElementById('statFollowup2').innerText = fu2Due;
+      document.getElementById('statReplied').innerText = replied;
+      document.getElementById('statNoReply').innerText = noReply;
+
+      // Tab counters
+      document.getElementById('countAll').innerText = total;
+      document.getElementById('countAction').innerText = dueToday;
+      document.getElementById('countUncontacted').innerText = leads.filter(l => l.contacted === 'No').length;
+      document.getElementById('countFu1').innerText = fu1Due;
+      document.getElementById('countFu2').innerText = fu2Due;
+      document.getElementById('countReplied').innerText = replied;
+      document.getElementById('countNoReply').innerText = noReply;
+    }
+
+    // Set Active Filter Tab
+    function setFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.dataset.tab === filter) {
+          btn.className = "filter-btn active-tab px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-indigo-600 text-white shadow-sm";
+        } else {
+          btn.className = "filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white";
+        }
+      });
+      renderLeads();
+    }
+
+    // Render Leads List
+    function renderLeads() {
+      const container = document.getElementById('leadsContainer');
+      const searchQuery = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+
+      const filtered = leads.filter(lead => {
+        // Search filter
+        if (searchQuery) {
+          const match = (lead.companyName + ' ' + lead.decisionMakerName + ' ' + lead.industry + ' ' + lead.location).toLowerCase();
+          if (!match.includes(searchQuery)) return false;
+        }
+
+        // Tab filters
+        if (currentFilter === 'needs_action') {
+          return lead.contacted === 'No' || (lead.contacted !== 'No' && lead.followup1Status === 'Pending');
+        }
+        if (currentFilter === 'uncontacted') return lead.contacted === 'No';
+        if (currentFilter === 'fu1') return lead.contacted !== 'No' && lead.followup1Status === 'Pending' && lead.contacted !== 'Replied' && lead.contacted !== 'Not Interested';
+        if (currentFilter === 'fu2') return lead.followup1Status === 'Sent' && lead.followup2Status === 'Pending' && lead.contacted !== 'Replied' && lead.contacted !== 'Not Interested';
+        if (currentFilter === 'replied') return lead.contacted === 'Replied' || (lead.notes && lead.notes.includes('Replied'));
+        if (currentFilter === 'noreply') return lead.contacted === 'Not Interested' || lead.followup2Status === 'Closed' || lead.followup1Status === 'Closed';
+
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="bg-[#10172a] border border-slate-800/80 rounded-2xl p-10 text-center space-y-2">
+            <div class="text-3xl">🎯</div>
+            <div class="text-sm font-semibold text-white">No leads match this view</div>
+            <p class="text-xs text-slate-400">Try choosing a different tab or clear your search term.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(lead => {
+        // Pre-composed Pitch Message for WhatsApp / Email
+        const cleanWhatsApp = (lead.whatsapp || lead.phone || '').replace(/[^0-9]/g, '');
+        const whatsappPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'}, noticed ${lead.companyName}'s work in ${lead.location.split(',')[0]}! We built DaftarHub (all-in-one team, attendance, and project platform for Pakistani agencies) to eliminate messy spreadsheets. Would love to share a quick 2-min walkthrough with you.`);
+        const emailPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'},\n\nNoticed ${lead.companyName}'s team and projects in ${lead.location.split(',')[0]}.\n\nManaging team attendance, leaves, and project milestones across multiple spreadsheets can quickly become fragmented as your team scales.\n\nWe built DaftarHub specifically as an all-in-one operating system for Pakistani professional services and agencies.\n\nWould you be open to a quick 5-min demo this week?\n\nBest regards,\nDaftarHub Team`);
+
+        const isContacted = lead.contacted && lead.contacted !== 'No';
+        const isFu1Sent = lead.followup1Status === 'Sent';
+        const isFu2Sent = lead.followup2Status === 'Sent';
+        const isReplied = lead.contacted === 'Replied';
+        const isClosed = lead.contacted === 'Not Interested' || lead.followup2Status === 'Closed';
+
+        return `
+          <div class="bg-[#10172a] border ${isReplied ? 'border-emerald-500/40 bg-emerald-950/10' : (isClosed ? 'border-slate-800/60 opacity-70' : 'border-slate-800')} rounded-2xl p-5 shadow-sm space-y-4 transition hover:border-slate-700">
+            
+            <!-- TOP CARD ROW -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+              <div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <h3 class="font-bold text-base text-white tracking-tight">${escapeHtml(lead.companyName)}</h3>
+                  <span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">${escapeHtml(lead.industry)}</span>
+                  <span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">${escapeHtml(lead.estimatedEmployees)}</span>
+                  ${lead.dateAdded ? `<span class="text-[11px] text-slate-500">Added: ${lead.dateAdded}</span>` : ''}
+                </div>
+                <div class="text-xs text-slate-400 mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <span>📍 ${escapeHtml(lead.location)}</span>
+                  <span>👤 <strong class="text-slate-200">${escapeHtml(lead.decisionMakerName)}</strong> (${escapeHtml(lead.designation)})</span>
+                </div>
+              </div>
+
+              <!-- OUTREACH CHANNELS BUTTONS -->
+              <div class="flex flex-wrap items-center gap-2">
+                ${cleanWhatsApp ? `
+                  <a href="https://wa.me/${cleanWhatsApp}?text=${whatsappPitch}" target="_blank" onclick="markContactedDirect(${lead.rowIndex}, 'Yes - WhatsApp')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-semibold transition">
+                    <span>💬 WhatsApp</span>
+                  </a>
+                ` : ''}
+
+                ${lead.email ? `
+                  <a href="mailto:${escapeHtml(lead.email)}?subject=DaftarHub%20for%20${encodeURIComponent(lead.companyName)}&body=${emailPitch}" target="_blank" onclick="markContactedDirect(${lead.rowIndex}, 'Yes - Email')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 text-xs font-semibold transition">
+                    <span>✉️ Email</span>
+                  </a>
+                ` : ''}
+
+                ${lead.phone ? `
+                  <a href="tel:${escapeHtml(lead.phone)}" class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition" title="Call">
+                    <span>📞 ${escapeHtml(lead.phone)}</span>
+                  </a>
+                ` : ''}
+
+                ${lead.decisionMakerLinkedIn ? `
+                  <a href="${escapeHtml(lead.decisionMakerLinkedIn)}" target="_blank" class="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition" title="LinkedIn / Profile">
+                    <svg class="w-4 h-4 text-sky-400" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                  </a>
+                ` : ''}
+
+                ${lead.website ? `
+                  <a href="${escapeHtml(lead.website)}" target="_blank" class="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition" title="Website">
+                    <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+
+            <!-- DAFTARHUB FIT & PITCH DRAWER -->
+            <div class="bg-[#0b101e] border border-slate-800/80 rounded-xl p-3 text-xs space-y-1">
+              <div class="font-semibold text-slate-300 flex items-center justify-between">
+                <span>🎯 Pitch Angle & Fit Analysis</span>
+                <span class="text-[11px] text-indigo-400 font-normal">Customized for DaftarHub</span>
+              </div>
+              <p class="text-slate-400 leading-relaxed">${escapeHtml(lead.daftarHubFit)}</p>
+            </div>
+
+            <!-- PIPELINE TRACKING CONTROLS -->
+            <div class="border-t border-slate-800/80 pt-3 flex flex-wrap items-center justify-between gap-3">
+              
+              <!-- STAGE STEPPERS -->
+              <div class="flex flex-wrap items-center gap-2">
+                
+                <!-- 1. Contacted Status -->
+                <div class="flex items-center gap-1.5 bg-[#141d36] border border-slate-700/80 rounded-xl px-2.5 py-1">
+                  <span class="text-[11px] font-semibold text-slate-400">1. Initial Contact:</span>
+                  <select onchange="updateLeadField(${lead.rowIndex}, 'contacted', this.value)" class="bg-transparent text-xs text-white font-medium focus:outline-none cursor-pointer">
+                    <option value="No" class="bg-slate-900" ${lead.contacted === 'No' ? 'selected' : ''}>⏳ Not Contacted</option>
+                    <option value="Yes - WhatsApp" class="bg-slate-900" ${lead.contacted === 'Yes - WhatsApp' ? 'selected' : ''}>✅ WhatsApp Sent</option>
+                    <option value="Yes - Email" class="bg-slate-900" ${lead.contacted === 'Yes - Email' ? 'selected' : ''}>✅ Email Sent</option>
+                    <option value="Yes - LinkedIn" class="bg-slate-900" ${lead.contacted === 'Yes - LinkedIn' ? 'selected' : ''}>✅ LinkedIn Sent</option>
+                    <option value="Yes - Phone" class="bg-slate-900" ${lead.contacted === 'Yes - Phone' ? 'selected' : ''}>✅ Called</option>
+                    <option value="Replied" class="bg-slate-900" ${lead.contacted === 'Replied' ? 'selected' : ''}>🎉 Replied / Interested</option>
+                    <option value="Not Interested" class="bg-slate-900" ${lead.contacted === 'Not Interested' ? 'selected' : ''}>❌ Not Interested</option>
+                  </select>
+                </div>
+
+                <!-- 2. Follow-up 1 (Reminder 1) -->
+                <button onclick="toggleFollowup(${lead.rowIndex}, 1)" class="flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold transition ${isFu1Sent ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30' : (isContacted ? 'bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700' : 'bg-slate-900 text-slate-600 border border-slate-800 cursor-not-allowed')}">
+                  <span>${isFu1Sent ? '✓' : '○'} Reminder 1</span>
+                  ${lead.followup1Date ? `<span class="text-[10px] text-slate-400">(${lead.followup1Date})</span>` : ''}
+                </button>
+
+                <!-- 3. Follow-up 2 (Reminder 2) -->
+                <button onclick="toggleFollowup(${lead.rowIndex}, 2)" class="flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold transition ${isFu2Sent ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' : (isFu1Sent ? 'bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700' : 'bg-slate-900 text-slate-600 border border-slate-800 cursor-not-allowed')}">
+                  <span>${isFu2Sent ? '✓' : '○'} Reminder 2</span>
+                  ${lead.followup2Date ? `<span class="text-[10px] text-slate-400">(${lead.followup2Date})</span>` : ''}
+                </button>
+              </div>
+
+              <!-- OUTCOME ACTIONS -->
+              <div class="flex items-center gap-2">
+                <button onclick="markOutcome(${lead.rowIndex}, 'Replied')" class="px-2.5 py-1 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-semibold transition" title="Mark as Replied">
+                  🎉 Replied
+                </button>
+                <button onclick="markOutcome(${lead.rowIndex}, 'Not Interested')" class="px-2.5 py-1 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-semibold transition" title="Mark as Not Interested / Didn't Reply">
+                  ✕ No Reply
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Direct WhatsApp / Email quick mark
+    function markContactedDirect(rowIndex, channel) {
+      updateLeadField(rowIndex, 'contacted', channel);
+    }
+
+    // Toggle Follow-up 1 or 2
+    function toggleFollowup(rowIndex, stage) {
+      const lead = leads.find(l => l.rowIndex === rowIndex);
+      if (!lead) return;
+
+      const today = new Date().toISOString().split('T')[0];
+
+      if (stage === 1) {
+        const nextStatus = lead.followup1Status === 'Sent' ? 'Pending' : 'Sent';
+        lead.followup1Status = nextStatus;
+        lead.followup1Date = nextStatus === 'Sent' ? today : '';
+        syncRowToSheet(lead, { followup1Status: nextStatus, followup1Date: lead.followup1Date });
+      } else if (stage === 2) {
+        const nextStatus = lead.followup2Status === 'Sent' ? 'Pending' : 'Sent';
+        lead.followup2Status = nextStatus;
+        lead.followup2Date = nextStatus === 'Sent' ? today : '';
+        syncRowToSheet(lead, { followup2Status: nextStatus, followup2Date: lead.followup2Date });
+      }
+
+      saveCache();
+      showToast(`Updated Reminder ${stage} for ${lead.companyName}`);
+    }
+
+    // Mark Outcome (Replied or No Reply)
+    function markOutcome(rowIndex, outcome) {
+      const lead = leads.find(l => l.rowIndex === rowIndex);
+      if (!lead) return;
+
+      lead.contacted = outcome;
+      if (outcome === 'Not Interested') {
+        lead.followup1Status = 'Closed';
+        lead.followup2Status = 'Closed';
+      }
+      syncRowToSheet(lead, { contacted: outcome, followup1Status: lead.followup1Status, followup2Status: lead.followup2Status });
+      saveCache();
+      showToast(`Marked ${lead.companyName} as ${outcome}`);
+    }
+
+    // Update single lead field
+    function updateLeadField(rowIndex, field, value) {
+      const lead = leads.find(l => l.rowIndex === rowIndex);
+      if (!lead) return;
+
+      lead[field] = value;
+      if (field === 'contacted' && value !== 'No') {
+        lead.contactDate = new Date().toISOString().split('T')[0];
+      }
+
+      const patch = { [field]: value };
+      if (lead.contactDate) patch.contactDate = lead.contactDate;
+
+      syncRowToSheet(lead, patch);
+      saveCache();
+      showToast(`Updated ${lead.companyName}`);
+    }
+
+    // Sync to Google Sheet via Web App (doPost)
+    function syncRowToSheet(lead, patch) {
+      if (!webAppUrl) {
+        console.log("Local cache updated (Web App URL not connected yet).");
+        return;
+      }
+
+      const payload = {
+        rowIndex: lead.rowIndex,
+        ...patch
+      };
+
+      fetch(webAppUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        showToast("Synced with Google Sheet ✓");
+      })
+      .catch(err => {
+        console.warn("Could not sync to Sheet:", err);
+      });
+    }
+
+    // Fetch live rows from Google Sheet via Web App (doGet)
+    function fetchSheetData() {
+      if (!webAppUrl) {
+        document.getElementById('syncStatusText').innerText = "Local Mode (Connect Web App URL)";
+        return;
+      }
+
+      document.getElementById('syncStatusText').innerText = "Fetching live sheet...";
+      
+      fetch(webAppUrl)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.leads && data.leads.length > 0) {
+            leads = data.leads;
+            saveCache();
+            document.getElementById('syncStatusText').innerText = "Live Synced with Google Sheet";
+            showToast("Fetched fresh leads from Google Sheet!");
+          }
+        })
+        .catch(err => {
+          console.warn("Fetch error:", err);
+          document.getElementById('syncStatusText').innerText = "Sync Error (Check Web App URL)";
+        });
+    }
+
+    // Settings Modal
+    function openSettingsModal() {
+      document.getElementById('settingsModal').classList.remove('hidden');
+    }
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').classList.add('hidden');
+    }
+    function saveSettings() {
+      const url = document.getElementById('webAppUrlInput').value.trim();
+      webAppUrl = url;
+      localStorage.setItem('daftarhub_webapp_url', url);
+      closeSettingsModal();
+      showToast("Settings saved!");
+      if (url) fetchSheetData();
+    }
+
+    // Show Toast
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMessage').innerText = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+
+    // Helper HTML escape
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Run
+    init();
+
+    // Auto-refresh every 30 seconds when online
+    setInterval(() => {
+      if (navigator.onLine && webAppUrl) {
+        fetchSheetData();
+      }
+    }, 30000);
+
+    // Auto-refresh whenever you switch back to this browser tab
+    window.addEventListener('focus', () => {
+      if (navigator.onLine && webAppUrl) {
+        fetchSheetData();
+      }
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && navigator.onLine && webAppUrl) {
+        fetchSheetData();
+      }
+    });
+  </script>
+</body>
+</html>
