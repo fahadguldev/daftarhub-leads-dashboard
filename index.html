@@ -728,6 +728,62 @@
         followup2Status: "Pending",
         notes: "Priority 2: Founder-led marketing boutique",
         dateAdded: "2026-10-30"
+      },
+      {
+        rowIndex: 4,
+        companyName: "Digital Dost (Pvt.) Limited",
+        industry: "Performance Marketing, Ads & E-Commerce",
+        location: "14 CCA, Khayaban-e-Amin, Lahore, Pakistan",
+        estimatedEmployees: "5–12 employees",
+        website: "https://thedigitaldost.com",
+        googleMaps: "https://maps.google.com/?q=14+CCA+Khayaban-e-Amin+Lahore",
+        decisionMakerName: "Syed Musa Raza",
+        designation: "Founder & CEO",
+        email: "support@thedigitaldost.com",
+        phone: "+92 302 8491414",
+        whatsapp: "+92 302 8491414",
+        decisionMakerLinkedIn: "https://www.linkedin.com/in/syed-musa-raza/",
+        companyLinkedIn: "https://www.linkedin.com/company/digital-dost-pvt-limited/",
+        instagram: "https://www.instagram.com/digitaldostpk/",
+        facebook: "https://www.facebook.com/thedigitaldost/",
+        otherProfiles: "Personal: https://syedmusaraza.com | LCCI Registered",
+        daftarHubFit: "High-velocity performance agency managing cross-platform ad campaigns with an in-office creative & media team. Needs real-time employee attendance tracking, client task milestone workflows, and streamlined leave logging.",
+        contacted: "No",
+        contactDate: "",
+        followup1Date: "",
+        followup1Status: "Pending",
+        followup2Date: "",
+        followup2Status: "Pending",
+        notes: "Priority 1: Active performance marketing agency, founder heavily active on LinkedIn and WhatsApp.",
+        dateAdded: "2026-10-31"
+      },
+      {
+        rowIndex: 5,
+        companyName: "Digital Rows",
+        industry: "Digital Marketing, SEO & Web Development",
+        location: "669 – E, AWT Phase 2, Raiwind Road, Lahore, Pakistan",
+        estimatedEmployees: "4–8 employees",
+        website: "https://digitalmarketingagencyinlahore.com",
+        googleMaps: "https://maps.google.com/?q=AWT+Phase+2+Raiwind+Road+Lahore",
+        decisionMakerName: "Wasif Ali",
+        designation: "CEO",
+        email: "info@digitalmarketingagencyinlahore.com",
+        phone: "+92 300 8423635",
+        whatsapp: "+92 300 8423635",
+        decisionMakerLinkedIn: "https://www.linkedin.com/company/digitalrows/",
+        companyLinkedIn: "https://www.linkedin.com/company/digitalrows/",
+        instagram: "",
+        facebook: "https://www.facebook.com/digitalrows/",
+        otherProfiles: "Clutch: https://clutch.co/profile/digital-rows | Domain: https://digitalrows.com",
+        daftarHubFit: "Office-based agency operating 6 days a week (Mon-Sat 8am-6pm) with in-house developers and SEO executives. Needs structured daily attendance/check-ins, shift tracking, and client milestone delivery.",
+        contacted: "No",
+        contactDate: "",
+        followup1Date: "",
+        followup1Status: "Pending",
+        followup2Date: "",
+        followup2Status: "Pending",
+        notes: "Priority 2: Stable local agency on Raiwind Rd with dedicated physical office team.",
+        dateAdded: "2026-10-31"
       }
     ];
 
@@ -741,7 +797,12 @@
     function init() {
       const cached = localStorage.getItem('daftarhub_leads_cache');
       if (cached) {
-        try { leads = JSON.parse(cached); } catch(e) { leads = [...INITIAL_LEADS]; }
+        try { 
+          leads = JSON.parse(cached);
+          if (leads.length < INITIAL_LEADS.length) {
+            leads = [...INITIAL_LEADS];
+          }
+        } catch(e) { leads = [...INITIAL_LEADS]; }
       } else {
         leads = [...INITIAL_LEADS];
       }
