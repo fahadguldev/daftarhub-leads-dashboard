@@ -792,7 +792,8 @@
     let activePreset = 'all';
     let selectedLead = null;
     let draggedRowIndex = null;
-    let webAppUrl = localStorage.getItem('daftarhub_webapp_url') || '';
+    const DEFAULT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyt5lX8J4hwRQUtpeai_3FDj9FFoQ67nBTDuRx_ciTmjlAsFPce3DsuxB7C2hJ3Ec89/exec";
+    let webAppUrl = localStorage.getItem('daftarhub_webapp_url') || DEFAULT_WEB_APP_URL;
 
     function init() {
       const cached = localStorage.getItem('daftarhub_leads_cache');
@@ -1494,16 +1495,21 @@
 
     function fetchSheetData() {
       if (!webAppUrl) return;
+      document.getElementById('liveSyncText').innerText = "Syncing...";
       fetch(webAppUrl)
         .then(res => res.json())
         .then(data => {
           if (data && data.leads && data.leads.length > 0) {
             leads = data.leads;
             saveCache();
-            showToast("Fetched fresh leads from Sheet!");
+            document.getElementById('liveSyncText').innerText = "Live";
+            showToast("Synced with Google Sheet (" + leads.length + " leads)");
           }
         })
-        .catch(err => console.warn(err));
+        .catch(err => {
+          console.warn("Sheet sync error:", err);
+          document.getElementById('liveSyncText').innerText = "Offline / Auth";
+        });
     }
 
     function openSettingsModal() { document.getElementById('settingsModal').classList.remove('hidden'); }
