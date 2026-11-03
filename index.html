@@ -959,8 +959,11 @@
       if (cached) {
         try { 
           leads = JSON.parse(cached);
-          if (leads.length < INITIAL_LEADS.length) {
-            leads = [...INITIAL_LEADS];
+          const cachedCompanySet = new Set(leads.map(l => (l.companyName || '').trim().toLowerCase()));
+          const missing = INITIAL_LEADS.filter(initLead => !cachedCompanySet.has((initLead.companyName || '').trim().toLowerCase()));
+          if (missing.length > 0) {
+            leads = [...leads, ...missing];
+            saveCache();
           }
         } catch(e) { leads = [...INITIAL_LEADS]; }
       } else {
@@ -1698,10 +1701,14 @@
         .then(res => res.json())
         .then(data => {
           if (data && data.leads && data.leads.length > 0) {
-            leads = data.leads;
+            // Intelligent Merge: Google Sheet is the primary source of truth, but preserve any local verified leads from INITIAL_LEADS not yet entered into the Sheet
+            const sheetCompanySet = new Set(data.leads.map(l => (l.companyName || '').trim().toLowerCase()));
+            const unaddedInitialLeads = INITIAL_LEADS.filter(initLead => !sheetCompanySet.has((initLead.companyName || '').trim().toLowerCase()));
+
+            leads = [...data.leads, ...unaddedInitialLeads];
             saveCache();
             document.getElementById('liveSyncText').innerText = "Live";
-            showToast("Synced with Google Sheet (" + leads.length + " leads)");
+            showToast("Synced with Google Sheet (" + leads.length + " leads total)");
           }
         })
         .catch(err => {
