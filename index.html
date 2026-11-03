@@ -83,15 +83,20 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.35rem;
+      width: 1.75rem;
+      height: 1.75rem;
       border-radius: 0.5rem;
       transition: all 0.15s ease;
-      font-size: 0.72rem;
-      font-weight: 600;
-      gap: 0.35rem;
+      flex-shrink: 0;
     }
     .channel-btn svg {
       display: block;
+      flex-shrink: 0;
+    }
+    .channel-slot-empty {
+      display: inline-block;
+      width: 1.75rem;
+      height: 1.75rem;
       flex-shrink: 0;
     }
   </style>
@@ -775,6 +780,14 @@
       return links;
     }
 
+    function parseLeadProfiles(lead) {
+      const extra = parseExtraLinks(lead.otherProfiles);
+      const clutch = extra.find(e => e.type === 'clutch') || null;
+      const github = extra.find(e => e.type === 'github') || null;
+      const other = extra.find(e => e.type !== 'clutch' && e.type !== 'github' && e.type !== 'linkedin') || null;
+      return { clutch, github, other, all: extra };
+    }
+
     const INITIAL_LEADS = [
       {
         rowIndex: 2,
@@ -1174,75 +1187,141 @@
       draggedRowIndex = null;
     }
 
+    function renderChannelSlot(item, isTable) {
+      if (item) {
+        return `<a href="${escapeHtml(item.url)}" ${item.target ? `target="${item.target}"` : 'target="_blank"'} class="channel-btn ${item.btnClass}" title="${escapeHtml(item.title)}">${item.iconSvg}</a>`;
+      }
+      if (isTable) {
+        return `<span class="channel-slot-empty" aria-hidden="true"></span>`;
+      }
+      return '';
+    }
+
     // Helper: Build channel action icons ribbon
-    function renderChannelsRibbon(lead) {
+    function renderChannelsRibbon(lead, isTable = true) {
       const cleanWA = (lead.whatsapp || lead.phone || '').replace(/[^0-9]/g, '');
       const waPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'}, noticed ${lead.companyName}'s work! We built DaftarHub to eliminate spreadsheet clutter for attendance, leaves, and project tasks for teams in Pakistan.`);
       const emailPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'},\n\nWe built DaftarHub specifically as an all-in-one operating platform for Pakistani agencies and software teams.\n\nWould you be open to a quick 5-min demo this week?`);
 
-      const extraLinks = parseExtraLinks(lead.otherProfiles);
+      const profiles = parseLeadProfiles(lead);
+
+      // Slot 1: WhatsApp
+      const waSlot = cleanWA ? {
+        url: `https://wa.me/${cleanWA}?text=${waPitch}`,
+        btnClass: 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20',
+        title: `WhatsApp (${lead.whatsapp || lead.phone})`,
+        iconSvg: ICONS.whatsapp("w-3.5 h-3.5")
+      } : null;
+
+      // Slot 2: Email
+      const emailSlot = lead.email ? {
+        url: `mailto:${escapeHtml(lead.email)}?subject=DaftarHub%20for%20${encodeURIComponent(lead.companyName)}&body=${emailPitch}`,
+        btnClass: 'bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/20',
+        title: `Email (${lead.email})`,
+        iconSvg: ICONS.mail("w-3.5 h-3.5")
+      } : null;
+
+      // Slot 3: Phone
+      const phoneSlot = lead.phone ? {
+        url: `tel:${escapeHtml(lead.phone)}`,
+        target: '_self',
+        btnClass: 'bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/20',
+        title: `Phone (${lead.phone})`,
+        iconSvg: ICONS.phone("w-3.5 h-3.5")
+      } : null;
+
+      // Slot 4: Founder LinkedIn
+      const founderLiSlot = lead.decisionMakerLinkedIn ? {
+        url: lead.decisionMakerLinkedIn,
+        btnClass: 'bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/20',
+        title: `Founder LinkedIn / Profile (${lead.decisionMakerName || 'Founder'})`,
+        iconSvg: ICONS.linkedin("w-3.5 h-3.5")
+      } : null;
+
+      // Slot 5: Company LinkedIn
+      const hasCompanyLi = lead.companyLinkedIn && lead.companyLinkedIn.startsWith('http') && lead.companyLinkedIn !== lead.decisionMakerLinkedIn;
+      const companyLiSlot = hasCompanyLi ? {
+        url: lead.companyLinkedIn,
+        btnClass: 'bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 border border-blue-600/20',
+        title: `Company LinkedIn Page (${lead.companyName})`,
+        iconSvg: ICONS.linkedin("w-3.5 h-3.5")
+      } : null;
+
+      // Slot 6: Instagram
+      const instaSlot = lead.instagram ? {
+        url: lead.instagram,
+        btnClass: 'bg-pink-500/10 hover:bg-pink-500/20 text-pink-400 border border-pink-500/20',
+        title: `Instagram Profile`,
+        iconSvg: ICONS.instagram("w-3.5 h-3.5")
+      } : null;
+
+      // Slot 7: Facebook
+      const fbSlot = lead.facebook ? {
+        url: lead.facebook,
+        btnClass: 'bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 border border-blue-600/20',
+        title: `Facebook Page`,
+        iconSvg: ICONS.facebook("w-3.5 h-3.5")
+      } : null;
+
+      // Slot 8: Official Website
+      const webSlot = lead.website ? {
+        url: lead.website,
+        btnClass: 'bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/20',
+        title: `Official Website (${lead.website})`,
+        iconSvg: ICONS.globe("w-3.5 h-3.5")
+      } : null;
+
+      // Slot 9: Google Maps
+      const mapsUrl = lead.googleMaps ? (lead.googleMaps.startsWith('http') ? lead.googleMaps : 'https://maps.google.com/?q=' + encodeURIComponent(lead.googleMaps)) : null;
+      const mapsSlot = mapsUrl ? {
+        url: mapsUrl,
+        btnClass: 'bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20',
+        title: `Google Maps (${lead.googleMaps})`,
+        iconSvg: ICONS.maps("w-3.5 h-3.5")
+      } : null;
+
+      // Slot 10: Clutch
+      const clutchSlot = profiles.clutch ? {
+        url: profiles.clutch.url,
+        btnClass: profiles.clutch.btnClass,
+        title: `${profiles.clutch.title}: ${profiles.clutch.label}`,
+        iconSvg: profiles.clutch.iconSvg
+      } : null;
+
+      // Slot 11: GitHub
+      const githubSlot = profiles.github ? {
+        url: profiles.github.url,
+        btnClass: profiles.github.btnClass,
+        title: `${profiles.github.title}: ${profiles.github.label}`,
+        iconSvg: profiles.github.iconSvg
+      } : null;
+
+      // Slot 12: Other Link (Portfolio, Personal Domain, etc.)
+      const otherSlot = profiles.other ? {
+        url: profiles.other.url,
+        btnClass: profiles.other.btnClass,
+        title: `${profiles.other.title}: ${profiles.other.label}`,
+        iconSvg: profiles.other.iconSvg
+      } : null;
+
+      const slots = [
+        waSlot,
+        emailSlot,
+        phoneSlot,
+        founderLiSlot,
+        companyLiSlot,
+        instaSlot,
+        fbSlot,
+        webSlot,
+        mapsSlot,
+        clutchSlot,
+        githubSlot,
+        otherSlot
+      ];
 
       return `
-        <div class="flex items-center gap-1.5 flex-wrap" onclick="event.stopPropagation()">
-          ${cleanWA ? `
-            <a href="https://wa.me/${cleanWA}?text=${waPitch}" target="_blank" class="channel-btn bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20" title="WhatsApp (${escapeHtml(lead.whatsapp || lead.phone)})">
-              ${ICONS.whatsapp("w-3.5 h-3.5")}
-            </a>
-          ` : ''}
-
-          ${lead.email ? `
-            <a href="mailto:${escapeHtml(lead.email)}?subject=DaftarHub%20for%20${encodeURIComponent(lead.companyName)}&body=${emailPitch}" target="_blank" class="channel-btn bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/20" title="Email (${escapeHtml(lead.email)})">
-              ${ICONS.mail("w-3.5 h-3.5")}
-            </a>
-          ` : ''}
-
-          ${lead.phone ? `
-            <a href="tel:${escapeHtml(lead.phone)}" class="channel-btn bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/20" title="Phone (${escapeHtml(lead.phone)})">
-              ${ICONS.phone("w-3.5 h-3.5")}
-            </a>
-          ` : ''}
-
-          ${lead.decisionMakerLinkedIn ? `
-            <a href="${escapeHtml(lead.decisionMakerLinkedIn)}" target="_blank" class="channel-btn bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/20" title="Founder LinkedIn / Profile">
-              ${ICONS.linkedin("w-3.5 h-3.5")}
-            </a>
-          ` : ''}
-
-          ${lead.companyLinkedIn && lead.companyLinkedIn !== lead.decisionMakerLinkedIn && lead.companyLinkedIn.startsWith('http') ? `
-            <a href="${escapeHtml(lead.companyLinkedIn)}" target="_blank" class="channel-btn bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 border border-blue-600/20" title="Company LinkedIn Page">
-              ${ICONS.linkedin("w-3.5 h-3.5")}
-            </a>
-          ` : ''}
-
-          ${lead.instagram ? `
-            <a href="${escapeHtml(lead.instagram)}" target="_blank" class="channel-btn bg-pink-500/10 hover:bg-pink-500/20 text-pink-400 border border-pink-500/20" title="Instagram">
-              ${ICONS.instagram("w-3.5 h-3.5")}
-            </a>
-          ` : ''}
-
-          ${lead.facebook ? `
-            <a href="${escapeHtml(lead.facebook)}" target="_blank" class="channel-btn bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 border border-blue-600/20" title="Facebook">
-              ${ICONS.facebook("w-3.5 h-3.5")}
-            </a>
-          ` : ''}
-
-          ${lead.website ? `
-            <a href="${escapeHtml(lead.website)}" target="_blank" class="channel-btn bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/20" title="Official Website (${escapeHtml(lead.website)})">
-              ${ICONS.globe("w-3.5 h-3.5")}
-            </a>
-          ` : ''}
-
-          ${lead.googleMaps ? `
-            <a href="${escapeHtml(lead.googleMaps.startsWith('http') ? lead.googleMaps : 'https://maps.google.com/?q=' + encodeURIComponent(lead.googleMaps))}" target="_blank" class="channel-btn bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20" title="Google Maps (${escapeHtml(lead.googleMaps)})">
-              ${ICONS.maps("w-3.5 h-3.5")}
-            </a>
-          ` : ''}
-
-          ${extraLinks.map(link => `
-            <a href="${escapeHtml(link.url)}" target="_blank" class="channel-btn ${link.btnClass}" title="${escapeHtml(link.title)}: ${escapeHtml(link.label)}">
-              ${link.iconSvg}
-            </a>
-          `).join('')}
+        <div class="flex items-center gap-1.5 shrink-0" onclick="event.stopPropagation()">
+          ${slots.map(slot => renderChannelSlot(slot, isTable)).join('')}
         </div>
       `;
     }
@@ -1321,7 +1400,7 @@
             <!-- ALL SOCIAL CHANNELS RIBBON -->
             <div class="pt-2 border-t border-white/[0.04]">
               <div class="text-[9px] uppercase tracking-wider font-bold text-zinc-400 mb-1.5">Available Channels:</div>
-              ${renderChannelsRibbon(lead)}
+              ${renderChannelsRibbon(lead, false)}
             </div>
 
             <!-- Footer Action -->
@@ -1364,7 +1443,7 @@
               ${escapeHtml(lead.location.split(',')[0])}
             </td>
             <td class="py-3 px-4" onclick="event.stopPropagation()">
-              ${renderChannelsRibbon(lead)}
+              ${renderChannelsRibbon(lead, true)}
             </td>
             <td class="py-3 px-4">
               ${statusBadge}
