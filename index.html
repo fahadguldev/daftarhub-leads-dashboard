@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DaftarHub — Sales & Omnichannel Outreach CRM</title>
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50%' y='68%' font-size='60' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>D</text></svg>">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
@@ -244,10 +246,11 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            <span id="liveSyncPing" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span id="liveSyncDot" class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
           <span class="text-[11px] font-bold text-zinc-200">Google Sheet DB</span>
+          <span id="liveSyncText" class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">Live</span>
         </div>
         <button onclick="fetchSheetData()" title="Sync live with Sheet" class="text-zinc-400 hover:text-white p-1 rounded hover:bg-zinc-800 transition">
           <i data-lucide="refresh-cw" class="w-3 h-3"></i>
@@ -956,6 +959,118 @@
         followup2Status: "Pending",
         notes: "Priority 1: Established software boutique in Bahria Phase 7 Rawalpindi with physical office and direct founder line.",
         dateAdded: "2026-11-01"
+      },
+      {
+        rowIndex: 8,
+        companyName: "NexPrime Agency",
+        industry: "Digital Marketing, SEO, Social Media & WordPress Web Development",
+        location: "Rizwan Arcade, Adam Jee Road, Saddar, Rawalpindi, Punjab, Pakistan",
+        estimatedEmployees: "5–14 employees",
+        website: "https://nexprimeagency.com",
+        googleMaps: "https://maps.google.com/?q=Rizwan+Arcade+Adam+Jee+Road+Saddar+Rawalpindi",
+        decisionMakerName: "Usman Ahmed",
+        designation: "Founder & CEO",
+        email: "info@nexprimeagency.com",
+        phone: "+92 318 5840364",
+        whatsapp: "+92 318 5840364",
+        decisionMakerLinkedIn: "https://www.linkedin.com/in/usman-ahmed-seo",
+        companyLinkedIn: "https://www.linkedin.com/company/nexprimeagency/",
+        instagram: "https://www.instagram.com/nexprimeagency/",
+        facebook: "https://www.facebook.com/nexprimeagency/",
+        otherProfiles: "SECP Registered | SuperbCompanies: https://superbcompanies.com/company/nexprime-agency/ | Linktree: https://linktr.ee/nexprimeagency",
+        daftarHubFit: "Established digital marketing & web boutique in Saddar Rawalpindi delivering SEO, PPC, and web projects with in-house creative & technical talent. With Co-Founder Hisham Ahmed handling operations and client onboarding, they need a unified system for staff attendance, flexible agency shift timings, leave management, and client sprint task tracking to eliminate scattered WhatsApp approvals and Google Sheets.",
+        contacted: "No",
+        contactDate: "",
+        followup1Date: "",
+        followup1Status: "Pending",
+        followup2Date: "",
+        followup2Status: "Pending",
+        notes: "Priority 1: High-intent digital agency in Saddar Rawalpindi with physical office, SECP registered, direct founder line & active WhatsApp.",
+        dateAdded: "2026-11-03"
+      },
+      {
+        rowIndex: 9,
+        companyName: "Intelligent Solutions Tech",
+        industry: "AI Workflow Automation, Custom Web Development & Digital Solutions",
+        location: "DHA Phase 1, Lahore, Punjab, Pakistan",
+        estimatedEmployees: "3–9 employees",
+        website: "https://intelligentsolutionstech.com",
+        googleMaps: "https://maps.google.com/?q=DHA+Phase+1+Lahore+Pakistan",
+        decisionMakerName: "Hassan Tariq Malik",
+        designation: "Founder & CEO",
+        email: "hassan@intelligentsolutionstech.com",
+        phone: "+92 316 4634400",
+        whatsapp: "+92 316 4634400",
+        decisionMakerLinkedIn: "https://www.linkedin.com/in/hassandigital918",
+        companyLinkedIn: "https://www.linkedin.com/company/intelligentsolutionstech/",
+        instagram: "Not publicly found",
+        facebook: "https://www.facebook.com/intelligentsolutionstech/",
+        otherProfiles: "Founder Site: https://hassantariqmalik.com | Clutch Profile: Intelligent Solutions Tech Lahore",
+        daftarHubFit: "Boutique IT & automation studio in DHA Phase 1 Lahore delivering AI workflow automations, custom Next.js/Laravel platforms, and CRM pipelines for overseas clients. Operating with an agile in-house team of engineers and marketers, they require structured time logging, employee attendance tracking, localized leave policies, and project deliverable milestones in a single clean portal rather than disconnected third-party tools. DaftarHub provides an all-in-one workspace built for Pakistani IT agencies.",
+        contacted: "No",
+        contactDate: "",
+        followup1Date: "",
+        followup1Status: "Pending",
+        followup2Date: "",
+        followup2Status: "Pending",
+        notes: "Priority 1: Modern AI/tech boutique studio in DHA Phase 1 Lahore, direct founder email, verified WhatsApp, and active LinkedIn.",
+        dateAdded: "2026-11-03"
+      },
+      {
+        rowIndex: 10,
+        companyName: "Graphiters",
+        industry: "Digital Marketing, SEO, Custom Web & Mobile App Development",
+        location: "2nd Floor, Plaza 93, D 4 Ln 8, Sector D, DHA Phase II, Islamabad, Pakistan",
+        estimatedEmployees: "8-18 employees",
+        website: "https://graphiters.com",
+        googleMaps: "https://maps.google.com/?q=Plaza+93+Sector+D+DHA+Phase+II+Islamabad",
+        decisionMakerName: "M. Usman Yameen",
+        designation: "Co-Founder & CEO",
+        email: "contact@graphiters.com",
+        phone: "+92 334 5353228",
+        whatsapp: "+92 334 5353228",
+        decisionMakerLinkedIn: "https://www.linkedin.com/in/usmanyameen",
+        companyLinkedIn: "https://www.linkedin.com/company/graphiters/",
+        instagram: "https://www.instagram.com/graphiters/",
+        facebook: "https://www.facebook.com/graphiters/",
+        otherProfiles: "Clutch: https://clutch.co/profile/graphiters | MobileAppDaily: https://www.mobileappdaily.com/company/graphiters | SelectedFirms",
+        daftarHubFit: "Established full-service digital and app agency in DHA Phase 2 Islamabad managing design, development, and SEO teams for overseas and regional clients. Operating across multiple client retainers and project sprints, they need structured attendance tracking, leave logging, and project delivery milestone management in a single local platform to replace manual spreadsheet records and WhatsApp coordination.",
+        contacted: "No",
+        contactDate: "",
+        followup1Date: "",
+        followup1Status: "Pending",
+        followup2Date: "",
+        followup2Status: "Pending",
+        notes: "Priority 1: High-intent digital & app agency in DHA Phase 2 Islamabad, Clutch rated, direct founder line & verified WhatsApp.",
+        dateAdded: "2026-11-04"
+      },
+      {
+        rowIndex: 11,
+        companyName: "SEOHub.pk (SEOHUB Pvt Ltd)",
+        industry: "Digital Marketing, SEO, Social Media & Web Development",
+        location: "3rd Floor, Plot #215, Category A, KDA Scheme 24, Block 3, Gulshan-e-Iqbal, Karachi, Pakistan",
+        estimatedEmployees: "8-20 employees",
+        website: "https://seohub.pk",
+        googleMaps: "https://maps.google.com/?q=Plot+215+Block+3+Gulshan-e-Iqbal+Karachi",
+        decisionMakerName: "Syed Talha Ali",
+        designation: "Founder & CEO",
+        email: "info@seohub.pk",
+        phone: "+92 331 0384402",
+        whatsapp: "+92 331 0384402",
+        decisionMakerLinkedIn: "https://www.linkedin.com/in/syed-talha-ali-seohub",
+        companyLinkedIn: "https://www.linkedin.com/company/seohub-pk",
+        instagram: "https://www.instagram.com/seohub.pk/",
+        facebook: "https://www.facebook.com/seohub.pk",
+        otherProfiles: "Clutch: https://clutch.co/profile/seohub | SECP Registered | TechBehemoths Verified | Alternative Line: +92 341 2411737",
+        daftarHubFit: "Fast-growing SEO and digital performance agency based in Gulshan-e-Iqbal Karachi serving both local and GCC/international clients. Managing an in-house team of SEO specialists, content creators, and web developers, they require structured attendance logging, staff shift tracking, transparent leave approvals, and campaign delivery milestone workflows in a single unified portal. DaftarHub provides an all-in-one operations hub built specifically for Pakistani digital agencies.",
+        contacted: "No",
+        contactDate: "",
+        followup1Date: "",
+        followup1Status: "Pending",
+        followup2Date: "",
+        followup2Status: "Pending",
+        notes: "Priority 1: Leading Karachi digital marketing boutique, SECP registered, direct founder line & verified WhatsApp.",
+        dateAdded: "2026-11-04"
       }
     ];
 
@@ -983,12 +1098,16 @@
         leads = [...INITIAL_LEADS];
       }
 
-      if (webAppUrl) {
-        document.getElementById('webAppUrlInput').value = webAppUrl;
-        fetchSheetData();
+      const urlInput = document.getElementById('webAppUrlInput');
+      if (urlInput && webAppUrl) {
+        urlInput.value = webAppUrl;
       }
 
       renderApp();
+
+      if (webAppUrl) {
+        fetchSheetData();
+      }
 
       window.addEventListener('keydown', (e) => {
         if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -1382,18 +1501,18 @@
           <div draggable="true" ondragstart="handleDragStart(event, ${lead.rowIndex})" ondragend="handleDragEnd(event)" onclick="openDrawer(${lead.rowIndex})" class="kanban-card linear-card rounded-xl p-3.5 space-y-3 cursor-grab active:cursor-grabbing transition shadow-sm">
             <div>
               <div class="flex items-center justify-between gap-2">
-                <span class="text-[9px] font-bold uppercase tracking-wider text-indigo-400 truncate">${escapeHtml(lead.industry.split('&')[0])}</span>
-                <span class="text-[9px] text-zinc-400 bg-zinc-800/80 px-1.5 py-0.2 rounded font-mono">${escapeHtml(lead.estimatedEmployees)}</span>
+                <span class="text-[9px] font-bold uppercase tracking-wider text-indigo-400 truncate">${escapeHtml((lead.industry || 'General').split('&')[0])}</span>
+                <span class="text-[9px] text-zinc-400 bg-zinc-800/80 px-1.5 py-0.2 rounded font-mono">${escapeHtml(lead.estimatedEmployees || '')}</span>
               </div>
-              <h4 class="font-bold text-xs text-white mt-1 tracking-tight">${escapeHtml(lead.companyName)}</h4>
+              <h4 class="font-bold text-xs text-white mt-1 tracking-tight">${escapeHtml(lead.companyName || '')}</h4>
               <div class="text-[11px] text-zinc-400 mt-1 flex items-center gap-1.5">
                 <i data-lucide="user" class="w-3 h-3 text-zinc-400"></i>
-                <strong class="text-zinc-200">${escapeHtml(lead.decisionMakerName)}</strong>
-                <span class="text-zinc-400">(${escapeHtml(lead.designation)})</span>
+                <strong class="text-zinc-200">${escapeHtml(lead.decisionMakerName || '')}</strong>
+                <span class="text-zinc-400">(${escapeHtml(lead.designation || '')})</span>
               </div>
               <div class="text-[10px] text-zinc-400 mt-0.5 flex items-center gap-1">
                 <i data-lucide="map-pin" class="w-2.5 h-2.5 text-zinc-400"></i>
-                <span>${escapeHtml(lead.location.split(',')[0])}</span>
+                <span>${escapeHtml((lead.location || 'Pakistan').split(',')[0])}</span>
               </div>
             </div>
 
@@ -1440,7 +1559,7 @@
               <div class="text-[11px] text-zinc-400">${escapeHtml(lead.designation)}</div>
             </td>
             <td class="py-3 px-4 text-zinc-400 text-[11px]">
-              ${escapeHtml(lead.location.split(',')[0])}
+              ${escapeHtml((lead.location || 'Pakistan').split(',')[0])}
             </td>
             <td class="py-3 px-4" onclick="event.stopPropagation()">
               ${renderChannelsRibbon(lead, true)}
@@ -1502,7 +1621,8 @@
       document.getElementById('drawerNotes').value = lead.notes || '';
 
       const cleanWA = (lead.whatsapp || lead.phone || '').replace(/[^0-9]/g, '');
-      const waPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'}, noticed ${lead.companyName}'s work in ${lead.location.split(',')[0]}! We built DaftarHub to eliminate scattered spreadsheets for agency attendance, leaves, and sprint milestones. Would love to share a quick 2-min demo.`);
+      const locationCity = (lead.location || 'Pakistan').split(',')[0];
+      const waPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'}, noticed ${lead.companyName}'s work in ${locationCity}! We built DaftarHub to eliminate scattered spreadsheets for agency attendance, leaves, and sprint milestones. Would love to share a quick 2-min demo.`);
       const emailPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'},\n\nWe built DaftarHub specifically as an all-in-one operating system for Pakistani professional services and agencies.\n\nWould you be open to a quick 5-min demo this week?`);
 
       document.getElementById('drawerWhatsAppBtn').href = cleanWA ? `https://wa.me/${cleanWA}?text=${waPitch}` : '#';
@@ -1773,26 +1893,53 @@
       });
     }
 
+    function setSyncStatus(status) {
+      const textEl = document.getElementById('liveSyncText');
+      const pingEl = document.getElementById('liveSyncPing');
+      const dotEl = document.getElementById('liveSyncDot');
+      if (!textEl) return;
+
+      if (status === 'syncing') {
+        textEl.innerText = "Syncing...";
+        textEl.className = "text-[9px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-mono";
+        if (dotEl) dotEl.className = "relative inline-flex rounded-full h-2 w-2 bg-amber-500";
+        if (pingEl) pingEl.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75";
+      } else if (status === 'live') {
+        textEl.innerText = "Live";
+        textEl.className = "text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono";
+        if (dotEl) dotEl.className = "relative inline-flex rounded-full h-2 w-2 bg-emerald-500";
+        if (pingEl) pingEl.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75";
+      } else {
+        textEl.innerText = "Offline / Auth";
+        textEl.className = "text-[9px] px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20 font-mono";
+        if (dotEl) dotEl.className = "relative inline-flex rounded-full h-2 w-2 bg-rose-500";
+        if (pingEl) pingEl.className = "hidden";
+      }
+    }
+
     function fetchSheetData() {
       if (!webAppUrl) return;
-      document.getElementById('liveSyncText').innerText = "Syncing...";
+      setSyncStatus('syncing');
       fetch(webAppUrl)
         .then(res => res.json())
         .then(data => {
           if (data && data.leads && data.leads.length > 0) {
-            // Intelligent Merge: Google Sheet is the primary source of truth, but preserve any local verified leads from INITIAL_LEADS not yet entered into the Sheet
+            // Intelligent Merge: Google Sheet is primary source of truth, preserve local verified leads if any
             const sheetCompanySet = new Set(data.leads.map(l => (l.companyName || '').trim().toLowerCase()));
             const unaddedInitialLeads = INITIAL_LEADS.filter(initLead => !sheetCompanySet.has((initLead.companyName || '').trim().toLowerCase()));
 
             leads = [...data.leads, ...unaddedInitialLeads];
             saveCache();
-            document.getElementById('liveSyncText').innerText = "Live";
+            renderApp();
+            setSyncStatus('live');
             showToast("Synced with Google Sheet (" + leads.length + " leads total)");
+          } else {
+            setSyncStatus('live');
           }
         })
         .catch(err => {
           console.warn("Sheet sync error:", err);
-          document.getElementById('liveSyncText').innerText = "Offline / Auth";
+          setSyncStatus('error');
         });
     }
 
