@@ -30,11 +30,22 @@ This project provides:
 2. Enter your deployed Google Apps Script Web App URL into the configuration/API prompt.
 3. Your leads will load automatically from the Google Sheet, enabling live status updates and follow-up tracking.
 
-### 3. Vercel Deployment
+### 3. Deployment Options
+
+#### Option A: GitHub Pages via GitHub Actions (Recommended)
+This repository includes an automated workflow at [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml):
+1. In your GitHub repository, navigate to **Settings > Pages**.
+2. Under **Build and deployment > Source**, choose **GitHub Actions**.
+3. Every push to `main` automatically triggers the GitHub Actions workflow and deploys your dashboard to:
+   ```
+   https://fahadguldev.github.io/daftarhub-leads-dashboard/
+   ```
+
+#### Option B: Vercel Deployment
 This repository includes a [`vercel.json`](./vercel.json) configuration:
 - Automatically routes all incoming requests directly to [`index.html`](./index.html).
 - Enables clean URLs and standard security headers.
-- To deploy, connect this GitHub repository in the Vercel dashboard and deploy with zero additional build configuration needed.
+- To deploy, connect this GitHub repository in your Vercel dashboard for instant auto-deployments.
 
 ---
 
