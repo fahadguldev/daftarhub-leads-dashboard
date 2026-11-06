@@ -237,6 +237,14 @@
           </span>
           <span id="countStageReplied" class="text-[11px] font-bold text-zinc-400 tabular-nums">0</span>
         </button>
+
+        <button onclick="filterByPreset('not_interested')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition">
+          <span class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+            <span>6. Not Interested</span>
+          </span>
+          <span id="countStageNotInterested" class="text-[11px] font-bold text-zinc-400 tabular-nums">0</span>
+        </button>
       </div>
 
     </div>
@@ -600,6 +608,9 @@
               <option value="Yes - Instagram">Sent via Instagram DM</option>
               <option value="Yes - Facebook">Sent via Facebook</option>
               <option value="Yes - Phone">Called Phone</option>
+              <option value="Replied">Outcome: Replied</option>
+              <option value="Not Interested">Outcome: Not Interested</option>
+              <option value="No Reply">Outcome: No Reply</option>
             </select>
           </div>
 
@@ -632,19 +643,34 @@
           </div>
 
           <!-- Final Outcome -->
-          <div class="p-3 bg-zinc-950 border border-white/[0.06] rounded-xl flex items-center justify-between">
-            <div>
-              <div class="font-bold text-white">Final Outcome</div>
-              <div class="text-[11px] text-zinc-400" id="stepFinalDesc">Awaiting response</div>
+          <div class="p-3.5 bg-zinc-950 border border-white/[0.06] rounded-xl space-y-2.5">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="font-bold text-white text-xs">Final Outreach Outcome</div>
+                <div class="text-[11px] text-zinc-400" id="stepFinalDesc">Awaiting response</div>
+              </div>
+              <span id="drawerOutcomeBadge" class="badge bg-zinc-800 text-zinc-400">Pending</span>
             </div>
-            <div class="flex items-center gap-1.5">
-              <button onclick="drawerSetOutcome('Replied')" class="px-2.5 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold text-xs transition flex items-center gap-1">
-                <i data-lucide="check" class="w-3 h-3"></i>
+
+            <div class="grid grid-cols-3 gap-1.5 pt-1">
+              <button onclick="drawerSetOutcome('Replied')" id="btnOutcomeReplied" class="px-2 py-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold text-xs transition flex items-center justify-center gap-1.5" title="Lead responded with interest or requested a demo">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
                 <span>Replied</span>
               </button>
-              <button onclick="drawerSetOutcome('Not Interested')" class="px-2.5 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 font-semibold text-xs transition flex items-center gap-1">
-                <i data-lucide="x" class="w-3 h-3"></i>
+              <button onclick="drawerSetOutcome('Not Interested')" id="btnOutcomeNotInterested" class="px-2 py-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 font-bold text-xs transition flex items-center justify-center gap-1.5" title="Lead responded but said they are not interested">
+                <i data-lucide="x-circle" class="w-3.5 h-3.5"></i>
+                <span>Not Interested</span>
+              </button>
+              <button onclick="drawerSetOutcome('No Reply')" id="btnOutcomeNoReply" class="px-2 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-white/[0.08] font-semibold text-xs transition flex items-center justify-center gap-1.5" title="No response received after follow-ups">
+                <i data-lucide="slash" class="w-3.5 h-3.5"></i>
                 <span>No Reply</span>
+              </button>
+            </div>
+
+            <div id="drawerResetOutcomeRow" class="hidden pt-1 flex justify-end">
+              <button onclick="drawerSetOutcome('No')" class="text-[10px] text-zinc-500 hover:text-zinc-300 transition flex items-center gap-1">
+                <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                <span>Reset to Uncontacted</span>
               </button>
             </div>
           </div>
@@ -1530,7 +1556,8 @@ If it looks useful, tell me a time this week and I’ll walk you through it.`;
           contacted: "2. Contacted",
           fu1: "3. Reminder 1 Due",
           fu2: "4. Reminder 2 Due",
-          replied: "5. Replied / Won"
+          replied: "5. Replied / Won",
+          not_interested: "6. Not Interested"
         };
         label.innerText = map[preset] || preset;
       }
@@ -1554,6 +1581,7 @@ If it looks useful, tell me a time this week and I’ll walk you through it.`;
         if (activePreset === 'fu1') return l.contacted !== 'No' && l.followup1Status === 'Pending';
         if (activePreset === 'fu2') return l.followup1Status === 'Sent' && l.followup2Status === 'Pending';
         if (activePreset === 'replied') return l.contacted === 'Replied';
+        if (activePreset === 'not_interested') return l.contacted === 'Not Interested';
 
         return true;
       });
@@ -1567,6 +1595,7 @@ If it looks useful, tell me a time this week and I’ll walk you through it.`;
       const total = leads.length;
       const contacted = leads.filter(l => l.contacted && l.contacted !== 'No').length;
       const replied = leads.filter(l => l.contacted === 'Replied').length;
+      const notInterested = leads.filter(l => l.contacted === 'Not Interested').length;
       const actionToday = leads.filter(l => l.contacted === 'No' || (l.contacted !== 'No' && l.followup1Status === 'Pending')).length;
 
       const uncontacted = leads.filter(l => l.contacted === 'No').length;
@@ -1587,6 +1616,8 @@ If it looks useful, tell me a time this week and I’ll walk you through it.`;
       document.getElementById('countStageFu1').innerText = fu1;
       document.getElementById('countStageFu2').innerText = fu2;
       document.getElementById('countStageReplied').innerText = replied;
+      const countNotInterestedEl = document.getElementById('countStageNotInterested');
+      if (countNotInterestedEl) countNotInterestedEl.innerText = notInterested;
     }
 
     // ==================== DRAG & DROP ENGINE ====================
@@ -1651,6 +1682,7 @@ If it looks useful, tell me a time this week and I’ll walk you through it.`;
       });
 
       saveCache();
+      renderApp();
       showToast(`Moved ${lead.companyName} to ${targetStage.toUpperCase()}`);
       draggedRowIndex = null;
     }
@@ -1849,6 +1881,14 @@ If it looks useful, tell me a time this week and I’ll walk you through it.`;
           nextActionBtn = `<button onclick="event.stopPropagation(); advanceStage(${lead.rowIndex}, 'fu1_sent')" class="px-2 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold transition">Sent Rem 1 →</button>`;
         } else if (stage === 'fu2') {
           nextActionBtn = `<button onclick="event.stopPropagation(); advanceStage(${lead.rowIndex}, 'fu2_sent')" class="px-2 py-1 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30 text-[10px] font-bold transition">Sent Rem 2 →</button>`;
+        } else if (stage === 'final') {
+          if (lead.contacted === 'Replied') {
+            nextActionBtn = `<span class="badge bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">✓ Replied</span>`;
+          } else if (lead.contacted === 'Not Interested') {
+            nextActionBtn = `<span class="badge bg-rose-500/15 text-rose-400 border border-rose-500/25">✕ Not Interested</span>`;
+          } else {
+            nextActionBtn = `<span class="badge bg-zinc-800 text-zinc-400 border border-white/[0.06]">⊘ No Reply</span>`;
+          }
         }
 
         return `
@@ -1897,7 +1937,8 @@ If it looks useful, tell me a time this week and I’ll walk you through it.`;
       tbody.innerHTML = list.map(lead => {
         let statusBadge = '<span class="badge bg-zinc-800 text-zinc-300">New Lead</span>';
         if (lead.contacted === 'Replied') statusBadge = '<span class="badge bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">Replied</span>';
-        else if (lead.contacted === 'Not Interested') statusBadge = '<span class="badge bg-rose-500/15 text-rose-400 border border-rose-500/25">No Reply</span>';
+        else if (lead.contacted === 'Not Interested') statusBadge = '<span class="badge bg-rose-500/15 text-rose-400 border border-rose-500/25">Not Interested</span>';
+        else if (lead.contacted === 'No Reply') statusBadge = '<span class="badge bg-zinc-800 text-zinc-400 border border-white/[0.06]">No Reply</span>';
         else if (lead.followup1Status === 'Sent' && lead.followup2Status === 'Pending') statusBadge = '<span class="badge bg-purple-500/15 text-purple-400 border border-purple-500/25">Reminder 2 Due</span>';
         else if (lead.contacted !== 'No' && lead.followup1Status === 'Pending') statusBadge = '<span class="badge bg-amber-500/15 text-amber-400 border border-amber-500/25">Reminder 1 Due</span>';
         else if (lead.contacted !== 'No') statusBadge = '<span class="badge bg-sky-500/15 text-sky-400 border border-sky-500/25">Contacted</span>';
@@ -1958,6 +1999,7 @@ If it looks useful, tell me a time this week and I’ll walk you through it.`;
       }
 
       saveCache();
+      renderApp();
     }
 
     function openDrawer(rowIndex) {
@@ -2151,10 +2193,62 @@ If it looks useful, tell me a time this week and I’ll walk you through it.`;
       document.getElementById('step1Desc').innerText = lead.contactDate ? `Sent on ${lead.contactDate}` : 'Uncontacted';
 
       document.getElementById('step2Icon').innerText = lead.followup1Status === 'Sent' ? '✓' : '2';
-      document.getElementById('step2Desc').innerText = lead.followup1Date ? `Sent on ${lead.followup1Date}` : 'Scheduled in 3 days';
+      document.getElementById('step2Desc').innerText = lead.followup1Date ? `Sent on ${lead.followup1Date}` : (lead.followup1Status === 'Closed' ? 'Closed' : 'Scheduled in 3 days');
 
       document.getElementById('step3Icon').innerText = lead.followup2Status === 'Sent' ? '✓' : '3';
-      document.getElementById('step3Desc').innerText = lead.followup2Date ? `Sent on ${lead.followup2Date}` : 'Scheduled in 6 days';
+      document.getElementById('step3Desc').innerText = lead.followup2Date ? `Sent on ${lead.followup2Date}` : (lead.followup2Status === 'Closed' ? 'Closed' : 'Scheduled in 6 days');
+
+      // Final Outcome badge & button highlight
+      const outcomeBadge = document.getElementById('drawerOutcomeBadge');
+      const finalDesc = document.getElementById('stepFinalDesc');
+      const btnReplied = document.getElementById('btnOutcomeReplied');
+      const btnNotInterested = document.getElementById('btnOutcomeNotInterested');
+      const btnNoReply = document.getElementById('btnOutcomeNoReply');
+      const resetRow = document.getElementById('drawerResetOutcomeRow');
+
+      if (btnReplied) btnReplied.className = "px-2 py-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold text-xs transition flex items-center justify-center gap-1.5";
+      if (btnNotInterested) btnNotInterested.className = "px-2 py-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 font-bold text-xs transition flex items-center justify-center gap-1.5";
+      if (btnNoReply) btnNoReply.className = "px-2 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-white/[0.08] font-semibold text-xs transition flex items-center justify-center gap-1.5";
+
+      if (lead.contacted === 'Replied') {
+        if (finalDesc) finalDesc.innerText = 'Lead replied / demo or meeting in progress';
+        if (outcomeBadge) {
+          outcomeBadge.className = 'badge bg-emerald-500/15 text-emerald-400 border border-emerald-500/25';
+          outcomeBadge.innerText = '✓ Replied';
+        }
+        if (btnReplied) btnReplied.className = "px-2 py-2 rounded-lg bg-emerald-500 text-zinc-950 font-bold text-xs shadow-lg shadow-emerald-500/20 border border-emerald-400 transition flex items-center justify-center gap-1.5 ring-2 ring-emerald-400/50";
+        if (resetRow) resetRow.classList.remove('hidden');
+      } else if (lead.contacted === 'Not Interested') {
+        if (finalDesc) finalDesc.innerText = 'Lead responded: Not interested (follow-ups closed)';
+        if (outcomeBadge) {
+          outcomeBadge.className = 'badge bg-rose-500/15 text-rose-400 border border-rose-500/25';
+          outcomeBadge.innerText = '✕ Not Interested';
+        }
+        if (btnNotInterested) btnNotInterested.className = "px-2 py-2 rounded-lg bg-rose-500 text-white font-bold text-xs shadow-lg shadow-rose-500/20 border border-rose-400 transition flex items-center justify-center gap-1.5 ring-2 ring-rose-400/50";
+        if (resetRow) resetRow.classList.remove('hidden');
+      } else if (lead.contacted === 'No Reply') {
+        if (finalDesc) finalDesc.innerText = 'No response received after follow-ups (closed)';
+        if (outcomeBadge) {
+          outcomeBadge.className = 'badge bg-zinc-800 text-zinc-300 border border-white/[0.08]';
+          outcomeBadge.innerText = '⊘ No Reply';
+        }
+        if (btnNoReply) btnNoReply.className = "px-2 py-2 rounded-lg bg-zinc-700 text-white font-bold text-xs border border-zinc-500 transition flex items-center justify-center gap-1.5 ring-2 ring-zinc-500/50";
+        if (resetRow) resetRow.classList.remove('hidden');
+      } else if (lead.contacted === 'No') {
+        if (finalDesc) finalDesc.innerText = 'Awaiting initial outreach';
+        if (outcomeBadge) {
+          outcomeBadge.className = 'badge bg-zinc-800 text-zinc-400';
+          outcomeBadge.innerText = 'Pending';
+        }
+        if (resetRow) resetRow.classList.add('hidden');
+      } else {
+        if (finalDesc) finalDesc.innerText = 'Outreach sent — awaiting prospect response';
+        if (outcomeBadge) {
+          outcomeBadge.className = 'badge bg-sky-500/15 text-sky-400 border border-sky-500/25';
+          outcomeBadge.innerText = 'In Progress';
+        }
+        if (resetRow) resetRow.classList.add('hidden');
+      }
 
       document.getElementById('leadDrawerBackdrop').classList.remove('hidden');
       document.getElementById('leadDrawer').classList.remove('translate-x-full');
@@ -2169,10 +2263,19 @@ If it looks useful, tell me a time this week and I’ll walk you through it.`;
 
     function drawerUpdateStatus(status) {
       if (!selectedLead) return;
+      if (status === 'Replied' || status === 'Not Interested' || status === 'No Reply') {
+        drawerSetOutcome(status);
+        return;
+      }
       selectedLead.contacted = status;
-      if (status !== 'No') selectedLead.contactDate = new Date().toISOString().split('T')[0];
+      if (status !== 'No') {
+        selectedLead.contactDate = selectedLead.contactDate || new Date().toISOString().split('T')[0];
+      } else {
+        selectedLead.contactDate = '';
+      }
       syncRowToSheet(selectedLead, { contacted: status, contactDate: selectedLead.contactDate });
       saveCache();
+      renderApp();
       openDrawer(selectedLead.rowIndex);
       showToast(`Updated status to ${status}`);
     }
@@ -2190,6 +2293,7 @@ If it looks useful, tell me a time this week and I’ll walk you through it.`;
         syncRowToSheet(selectedLead, { followup2Status: selectedLead.followup2Status, followup2Date: selectedLead.followup2Date });
       }
       saveCache();
+      renderApp();
       openDrawer(selectedLead.rowIndex);
       showToast(`Updated Follow-Up ${stage}`);
     }
@@ -2197,14 +2301,31 @@ If it looks useful, tell me a time this week and I’ll walk you through it.`;
     function drawerSetOutcome(outcome) {
       if (!selectedLead) return;
       selectedLead.contacted = outcome;
-      if (outcome === 'Not Interested') {
+      if (outcome === 'Not Interested' || outcome === 'No Reply') {
         selectedLead.followup1Status = 'Closed';
         selectedLead.followup2Status = 'Closed';
+      } else if (outcome === 'Replied') {
+        selectedLead.followup1Status = 'Closed';
+        selectedLead.followup2Status = 'Closed';
+      } else if (outcome === 'No') {
+        selectedLead.contactDate = '';
+        selectedLead.followup1Status = 'Pending';
+        selectedLead.followup1Date = '';
+        selectedLead.followup2Status = 'Pending';
+        selectedLead.followup2Date = '';
       }
-      syncRowToSheet(selectedLead, { contacted: outcome, followup1Status: selectedLead.followup1Status, followup2Status: selectedLead.followup2Status });
+      syncRowToSheet(selectedLead, { 
+        contacted: outcome, 
+        contactDate: selectedLead.contactDate,
+        followup1Status: selectedLead.followup1Status, 
+        followup1Date: selectedLead.followup1Date,
+        followup2Status: selectedLead.followup2Status,
+        followup2Date: selectedLead.followup2Date
+      });
       saveCache();
+      renderApp();
       openDrawer(selectedLead.rowIndex);
-      showToast(`Marked as ${outcome}`);
+      showToast(outcome === 'No' ? 'Reset lead to uncontacted' : `Marked as ${outcome}`);
     }
 
     function drawerSaveNotes(text) {
@@ -2212,6 +2333,7 @@ If it looks useful, tell me a time this week and I’ll walk you through it.`;
       selectedLead.notes = text;
       syncRowToSheet(selectedLead, { notes: text });
       saveCache();
+      renderApp();
       showToast("Notes saved to Sheet");
     }
 
