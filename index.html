@@ -522,11 +522,11 @@
 
         <!-- 1-Click Fast Launchers (WhatsApp & Email with Pitch) -->
         <div class="flex items-center gap-2 pt-2 border-t border-white/[0.04]">
-          <a id="drawerWhatsAppBtn" href="#" target="_blank" class="flex-1 py-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-bold text-center transition flex items-center justify-center gap-2 shadow-sm">
+          <a id="drawerWhatsAppBtn" href="#" target="daftarhub_whatsapp" class="flex-1 py-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-bold text-center transition flex items-center justify-center gap-2 shadow-sm">
             <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
             <span>Send WhatsApp Pitch</span>
           </a>
-          <a id="drawerEmailBtn" href="#" target="_blank" class="flex-1 py-2.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 text-sky-400 border border-sky-500/30 text-xs font-bold text-center transition flex items-center justify-center gap-2 shadow-sm">
+          <a id="drawerEmailBtn" href="#" target="daftarhub_email" class="flex-1 py-2.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 text-sky-400 border border-sky-500/30 text-xs font-bold text-center transition flex items-center justify-center gap-2 shadow-sm">
             <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
             <span>Send Email Pitch</span>
           </a>
@@ -534,20 +534,48 @@
       </div>
 
       <!-- Personalized Pitch Drawer -->
-      <div class="bg-indigo-950/20 border border-indigo-500/20 rounded-xl p-4 space-y-2">
+      <div class="bg-indigo-950/20 border border-indigo-500/20 rounded-xl p-4 space-y-3">
         <div class="flex items-center justify-between">
           <span class="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
             <i data-lucide="sparkles" class="w-3.5 h-3.5 text-indigo-400"></i>
-            <span>Personalized Pitch Angle</span>
+            <span>Outreach Message & Subject</span>
           </span>
-          <button onclick="copyPitchText()" class="text-[11px] font-semibold text-indigo-400 hover:text-indigo-200 transition flex items-center gap-1">
-            <i data-lucide="copy" class="w-3 h-3"></i>
-            <span>Copy</span>
-          </button>
+          <div class="flex items-center gap-2">
+            <button onclick="openSettingsModal('templates')" class="text-[11px] font-semibold text-indigo-400 hover:text-indigo-200 transition flex items-center gap-1" title="Customize Subject & Message Template">
+              <i data-lucide="edit-3" class="w-3 h-3"></i>
+              <span>Edit Template</span>
+            </button>
+            <button onclick="copyPitchText()" class="text-[11px] font-semibold text-indigo-400 hover:text-indigo-200 transition flex items-center gap-1">
+              <i data-lucide="copy" class="w-3 h-3"></i>
+              <span>Copy Message</span>
+            </button>
+          </div>
         </div>
-        <p class="text-xs text-indigo-100/90 leading-relaxed font-normal" id="drawerPitchText">
-          Pitch loading...
-        </p>
+
+        <!-- Subject Line Display -->
+        <div class="p-2 rounded-lg bg-zinc-950/80 border border-white/[0.06] flex items-center justify-between gap-2">
+          <div class="text-[11px] text-zinc-300 truncate">
+            <span class="text-zinc-500 font-semibold">Subject:</span>
+            <span id="drawerEmailSubject" class="font-medium text-white ml-1">...</span>
+          </div>
+          <button onclick="copySubjectText()" class="text-[10px] text-zinc-400 hover:text-white shrink-0 font-medium px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 transition">Copy</button>
+        </div>
+
+        <!-- Message Body Display -->
+        <div class="p-3 rounded-lg bg-zinc-950/60 border border-white/[0.04]">
+          <p class="text-xs text-indigo-100/90 leading-relaxed font-normal whitespace-pre-line" id="drawerPitchText">
+            Pitch loading...
+          </p>
+        </div>
+
+        <!-- Lead Custom Research Fit Background -->
+        <div class="text-[11px] text-zinc-400 pt-2 border-t border-indigo-500/10 space-y-1">
+          <div class="font-bold text-zinc-300 flex items-center gap-1">
+            <i data-lucide="info" class="w-3 h-3 text-indigo-400"></i>
+            <span>Agency Research & Fit Background:</span>
+          </div>
+          <p class="text-zinc-400 leading-relaxed text-xs" id="drawerAgencyFit">...</p>
+        </div>
       </div>
 
       <!-- Outreach Stepper Progression -->
@@ -647,32 +675,118 @@
 
   <!-- ==================== SETTINGS MODAL ==================== -->
   <div id="settingsModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-zinc-900 border border-white/[0.1] rounded-2xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
-      <div class="flex items-center justify-between border-b border-white/[0.08] pb-3">
+    <div class="bg-zinc-900 border border-white/[0.1] rounded-2xl max-w-xl w-full p-6 shadow-2xl relative space-y-4 max-h-[90vh] flex flex-col">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-white/[0.08] pb-3 shrink-0">
         <h3 class="font-bold text-sm text-white flex items-center gap-2">
-          <i data-lucide="settings" class="w-4 h-4 text-indigo-400"></i>
-          <span>Google Sheet Two-Way Sync</span>
+          <i data-lucide="sliders" class="w-4 h-4 text-indigo-400"></i>
+          <span>Settings & Outreach Templates</span>
         </h3>
-        <button onclick="closeSettingsModal()" class="text-zinc-400 hover:text-white">&times;</button>
+        <button onclick="closeSettingsModal()" class="text-zinc-400 hover:text-white text-lg">&times;</button>
       </div>
 
-      <p class="text-xs text-zinc-400 leading-relaxed">
-        Paste your Google Apps Script Web App URL below to sync your dashboard live with Google Sheets:
-      </p>
-
-      <div class="bg-zinc-950 border border-white/[0.06] rounded-xl p-3 text-xs space-y-1 font-mono text-zinc-400">
-        <div>Spreadsheet ID: <strong class="text-zinc-200">1AiuP1lstXRkSq-WR7nt5HBICgsNQzkxYriXWdu93Wps</strong></div>
-        <div class="text-[11px] text-zinc-400">Code is saved in: <code class="text-indigo-400">Desktop\fahad\Code.gs</code></div>
+      <!-- Settings Tabs -->
+      <div class="flex items-center gap-2 border-b border-white/[0.06] pb-2 shrink-0">
+        <button id="tabBtnTemplates" onclick="switchSettingsTab('templates')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm">
+          <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+          <span>Message & Email Templates</span>
+        </button>
+        <button id="tabBtnSync" onclick="switchSettingsTab('sync')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-zinc-400 hover:text-zinc-200">
+          <i data-lucide="database" class="w-3.5 h-3.5"></i>
+          <span>Google Sheet Sync</span>
+        </button>
       </div>
 
-      <div>
-        <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Web App URL</label>
-        <input type="url" id="webAppUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-zinc-950 border border-white/[0.1] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-400 focus:outline-none focus:border-indigo-500 font-mono">
+      <!-- Modal Body (Scrollable) -->
+      <div class="flex-1 overflow-y-auto space-y-4 pr-1">
+        <!-- TAB 1: Outreach & Message Templates -->
+        <div id="settingsTabTemplates" class="space-y-4">
+          <!-- Subject Template -->
+          <div>
+            <label class="block text-xs font-semibold text-zinc-300 mb-1">Email Subject Template</label>
+            <input type="text" id="emailSubjectInput" placeholder="e.g. Quick question regarding {{company_name}}" class="w-full bg-zinc-950 border border-white/[0.1] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500">
+            <div class="flex items-center gap-1.5 mt-1.5 text-[10px] text-zinc-400 flex-wrap">
+              <span class="text-zinc-500">Click to insert:</span>
+              <button type="button" onclick="insertPlaceholder('emailSubjectInput', '{{company_name}}')" class="px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-indigo-300 font-mono transition">{{company_name}}</button>
+              <button type="button" onclick="insertPlaceholder('emailSubjectInput', '{{person_name}}')" class="px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-indigo-300 font-mono transition">{{person_name}}</button>
+              <button type="button" onclick="insertPlaceholder('emailSubjectInput', '{{name}}')" class="px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-indigo-300 font-mono transition">{{name}}</button>
+            </div>
+          </div>
+
+          <!-- Greeting Preference -->
+          <div>
+            <label class="block text-xs font-semibold text-zinc-300 mb-1">Greeting Style for {{company_name}} / {{name}}</label>
+            <select id="greetingPrefInput" class="w-full bg-zinc-950 border border-white/[0.1] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer">
+              <option value="person_fallback">Person Name if available (e.g. "Hi Rizwan Rafiq"), otherwise Company Name (Recommended)</option>
+              <option value="company_only">Always Company Name (e.g. "Hi SolSvc")</option>
+              <option value="person_only">Always Person Name only</option>
+            </select>
+          </div>
+
+          <!-- Message Copy Template -->
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-semibold text-zinc-300">Outreach Message Copy (WhatsApp & Email Body)</label>
+              <button type="button" onclick="resetTemplateDefaults()" class="text-[10px] font-semibold text-indigo-400 hover:text-indigo-200 transition">Reset to Default Copy</button>
+            </div>
+            <textarea id="messageTemplateInput" rows="8" class="w-full bg-zinc-950 border border-white/[0.1] rounded-xl p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 font-sans leading-relaxed"></textarea>
+            <div class="flex items-center gap-1.5 mt-1.5 text-[10px] text-zinc-400 flex-wrap">
+              <span class="text-zinc-500">Click to insert:</span>
+              <button type="button" onclick="insertPlaceholder('messageTemplateInput', '{{company_name}}')" class="px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-indigo-300 font-mono transition">{{company_name}}</button>
+              <button type="button" onclick="insertPlaceholder('messageTemplateInput', '{{person_name}}')" class="px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-indigo-300 font-mono transition">{{person_name}}</button>
+              <button type="button" onclick="insertPlaceholder('messageTemplateInput', '{{first_name}}')" class="px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-indigo-300 font-mono transition">{{first_name}}</button>
+              <button type="button" onclick="insertPlaceholder('messageTemplateInput', '{{company}}')" class="px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-indigo-300 font-mono transition">{{company}}</button>
+            </div>
+          </div>
+
+          <!-- Delivery Handlers -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-white/[0.04]">
+            <div>
+              <label class="block text-xs font-semibold text-zinc-300 mb-1">Email Button Action</label>
+              <select id="emailProviderInput" class="w-full bg-zinc-950 border border-white/[0.1] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer">
+                <option value="gmail">Gmail Web (Loads mailbox directly in Chrome - Recommended)</option>
+                <option value="mailto">Default Mail Client (mailto: protocol)</option>
+              </select>
+              <p class="text-[10px] text-zinc-400 mt-1">Gmail Web avoids stuck blank tabs and pre-fills To, Subject, and Body.</p>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-zinc-300 mb-1">WhatsApp Tab Behavior</label>
+              <div class="p-2 rounded-xl bg-zinc-950 border border-white/[0.06] text-[11px] text-emerald-400 flex items-center gap-2">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5 shrink-0 text-emerald-400"></i>
+                <span>Reuses existing Chrome tab <code class="text-zinc-200">daftarhub_whatsapp</code> without opening extra tabs.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: Google Sheet Two-Way Sync -->
+        <div id="settingsTabSync" class="hidden space-y-4">
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Connect your Google Apps Script Web App URL below to sync your dashboard live with Google Sheets:
+          </p>
+
+          <div class="bg-zinc-950 border border-white/[0.06] rounded-xl p-3 text-xs space-y-1 font-mono text-zinc-400">
+            <div>Spreadsheet ID: <strong class="text-zinc-200">1AiuP1lstXRkSq-WR7nt5HBICgsNQzkxYriXWdu93Wps</strong></div>
+            <div class="text-[11px] text-zinc-400">Code is saved in: <code class="text-indigo-400">Desktop\fahad\Code.gs</code></div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Web App URL</label>
+            <input type="url" id="webAppUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-zinc-950 border border-white/[0.1] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 font-mono">
+          </div>
+        </div>
       </div>
 
-      <button onclick="saveSettings()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition">
-        Save & Connect Live
-      </button>
+      <!-- Modal Footer -->
+      <div class="pt-3 border-t border-white/[0.08] flex items-center gap-2 shrink-0">
+        <button onclick="closeSettingsModal()" class="flex-1 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold transition">
+          Cancel
+        </button>
+        <button onclick="saveSettings()" class="flex-1 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shadow-sm">
+          Save Settings & Apply
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1138,6 +1252,129 @@
     const DEFAULT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyt5lX8J4hwRQUtpeai_3FDj9FFoQ67nBTDuRx_ciTmjlAsFPce3DsuxB7C2hJ3Ec89/exec";
     let webAppUrl = localStorage.getItem('daftarhub_webapp_url') || DEFAULT_WEB_APP_URL;
 
+    // Outreach & Email Templates
+    const DEFAULT_MESSAGE_TEMPLATE = `Hi {{company_name}}, can you see what each client project actually earned you this month without digging through spreadsheets?
+
+We built DaftarHub at our own office to run the whole agency from one place: attendance, leave, workload, passwords and profit per project. It saves me about 50-60 hours a month.
+
+You pay nothing upfront: we customize it around your requirements, you test it, and you pay only once they’re met.
+
+2-min video: https://drive.google.com/file/d/1KlolTYNGFO6QDTrjVg5Ewel7R-vPKfqQ/view?usp=sharing
+
+Live demo: http://demo.daftarhub.app/
+
+If it looks useful, tell me a time this week and I’ll walk you through it.`;
+
+    const DEFAULT_EMAIL_SUBJECT = `Quick question regarding {{company_name}}`;
+
+    let appSettings = {
+      messageTemplate: localStorage.getItem('daftarhub_msg_template') || DEFAULT_MESSAGE_TEMPLATE,
+      emailSubject: localStorage.getItem('daftarhub_email_subject') || DEFAULT_EMAIL_SUBJECT,
+      greetingPreference: localStorage.getItem('daftarhub_greeting_pref') || 'person_fallback',
+      emailProvider: localStorage.getItem('daftarhub_email_provider') || 'gmail'
+    };
+
+    function cleanCompanyName(name) {
+      if (!name) return '';
+      return String(name)
+        .replace(/\s*\([^)]*\)/g, '')
+        .replace(/\s+Pvt\.?\s+Ltd\.?/gi, '')
+        .replace(/\s+Limited/gi, '')
+        .trim();
+    }
+
+    function getGreetingValue(lead, mode = 'person_fallback') {
+      if (!lead) return 'there';
+      const companyClean = cleanCompanyName(lead.companyName) || lead.companyName || '';
+      const personName = (lead.decisionMakerName || '').trim();
+
+      if (mode === 'company_only') {
+        return companyClean || personName || 'there';
+      }
+      if (mode === 'person_only') {
+        return personName || 'there';
+      }
+      // 'person_fallback': use person name if available, otherwise company name
+      return personName || companyClean || 'there';
+    }
+
+    function buildEmailSubject(lead) {
+      if (!lead) return 'Quick question';
+      const rawSubject = (appSettings.emailSubject || DEFAULT_EMAIL_SUBJECT).trim();
+      const companyClean = cleanCompanyName(lead.companyName) || lead.companyName || 'your team';
+      const personName = (lead.decisionMakerName || '').trim();
+      const greeting = getGreetingValue(lead, appSettings.greetingPreference || 'person_fallback');
+      const firstName = personName ? personName.split(' ')[0] : companyClean;
+
+      return rawSubject
+        .replace(/\{\{\s*company_name\s*\}\}/gi, companyClean)
+        .replace(/\{\{\s*company\s*\}\}/gi, companyClean)
+        .replace(/\{\{\s*person_name\s*\}\}/gi, personName || companyClean)
+        .replace(/\{\{\s*first_name\s*\}\}/gi, firstName)
+        .replace(/\{\{\s*name\s*\}\}/gi, greeting);
+    }
+
+    function buildOutreachMessage(lead) {
+      if (!lead) return '';
+      const rawMsg = (appSettings.messageTemplate || DEFAULT_MESSAGE_TEMPLATE).trim();
+      const companyClean = cleanCompanyName(lead.companyName) || lead.companyName || '';
+      const personName = (lead.decisionMakerName || '').trim();
+      const greeting = getGreetingValue(lead, appSettings.greetingPreference || 'person_fallback');
+      const firstName = personName ? personName.split(' ')[0] : companyClean;
+
+      return rawMsg
+        .replace(/\{\{\s*company_name\s*\}\}/gi, greeting)
+        .replace(/\{\{\s*person_name\s*\}\}/gi, personName || companyClean || 'there')
+        .replace(/\{\{\s*first_name\s*\}\}/gi, firstName || 'there')
+        .replace(/\{\{\s*company\s*\}\}/gi, companyClean)
+        .replace(/\{\{\s*name\s*\}\}/gi, greeting);
+    }
+
+    function buildWhatsAppUrl(lead) {
+      const cleanWA = (lead.whatsapp || lead.phone || '').replace(/[^0-9]/g, '');
+      if (!cleanWA) return null;
+      const msg = buildOutreachMessage(lead);
+      return `https://web.whatsapp.com/send?phone=${cleanWA}&text=${encodeURIComponent(msg)}`;
+    }
+
+    function buildEmailUrl(lead) {
+      if (!lead.email) return null;
+      const subject = buildEmailSubject(lead);
+      const body = buildOutreachMessage(lead);
+
+      if (appSettings.emailProvider === 'mailto') {
+        return `mailto:${encodeURIComponent(lead.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      }
+      return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(lead.email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
+    function openNamedWindow(e, url, windowName) {
+      if (e) e.stopPropagation();
+      const win = window.open(url, windowName);
+      if (win) {
+        win.focus();
+        if (e) e.preventDefault();
+      }
+    }
+
+    function handleEmailClick(e, rowIndex) {
+      if (e) e.stopPropagation();
+      const lead = leads.find(l => l.rowIndex === rowIndex);
+      if (!lead || !lead.email) return;
+
+      const subject = buildEmailSubject(lead);
+      const body = buildOutreachMessage(lead);
+
+      if (appSettings.emailProvider === 'mailto') {
+        window.location.href = `mailto:${encodeURIComponent(lead.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      } else {
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(lead.email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const win = window.open(gmailUrl, 'daftarhub_email');
+        if (win) win.focus();
+      }
+      if (e) e.preventDefault();
+    }
+
     function init() {
       const cached = localStorage.getItem('daftarhub_leads_cache');
       if (cached) {
@@ -1364,7 +1601,9 @@
 
     function renderChannelSlot(item, isTable) {
       if (item) {
-        return `<a href="${escapeHtml(item.url)}" ${item.target ? `target="${item.target}"` : 'target="_blank"'} class="channel-btn ${item.btnClass}" title="${escapeHtml(item.title)}">${item.iconSvg}</a>`;
+        const targetAttr = item.target ? `target="${escapeHtml(item.target)}"` : 'target="_blank"';
+        const onclickAttr = item.onclick ? `onclick="${item.onclick}"` : '';
+        return `<a href="${escapeHtml(item.url)}" ${targetAttr} ${onclickAttr} class="channel-btn ${item.btnClass}" title="${escapeHtml(item.title)}">${item.iconSvg}</a>`;
       }
       if (isTable) {
         return `<span class="channel-slot-empty" aria-hidden="true"></span>`;
@@ -1374,25 +1613,28 @@
 
     // Helper: Build channel action icons ribbon
     function renderChannelsRibbon(lead, isTable = true) {
-      const cleanWA = (lead.whatsapp || lead.phone || '').replace(/[^0-9]/g, '');
-      const waPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'}, noticed ${lead.companyName}'s work! We built DaftarHub to eliminate spreadsheet clutter for attendance, leaves, and project tasks for teams in Pakistan.`);
-      const emailPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'},\n\nWe built DaftarHub specifically as an all-in-one operating platform for Pakistani agencies and software teams.\n\nWould you be open to a quick 5-min demo this week?`);
+      const waUrl = buildWhatsAppUrl(lead);
+      const emailUrl = buildEmailUrl(lead);
 
       const profiles = parseLeadProfiles(lead);
 
-      // Slot 1: WhatsApp
-      const waSlot = cleanWA ? {
-        url: `https://wa.me/${cleanWA}?text=${waPitch}`,
+      // Slot 1: WhatsApp (Reuses existing open tab daftarhub_whatsapp)
+      const waSlot = waUrl ? {
+        url: waUrl,
+        target: 'daftarhub_whatsapp',
+        onclick: `openNamedWindow(event, this.href, 'daftarhub_whatsapp')`,
         btnClass: 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20',
-        title: `WhatsApp (${lead.whatsapp || lead.phone})`,
+        title: `WhatsApp (${lead.whatsapp || lead.phone}): Pitch Ready`,
         iconSvg: ICONS.whatsapp("w-3.5 h-3.5")
       } : null;
 
-      // Slot 2: Email
-      const emailSlot = lead.email ? {
-        url: `mailto:${escapeHtml(lead.email)}?subject=DaftarHub%20for%20${encodeURIComponent(lead.companyName)}&body=${emailPitch}`,
+      // Slot 2: Email (Loads Gmail directly in Chrome tab or default client)
+      const emailSlot = emailUrl ? {
+        url: emailUrl,
+        target: appSettings.emailProvider === 'mailto' ? '_self' : 'daftarhub_email',
+        onclick: `handleEmailClick(event, ${lead.rowIndex})`,
         btnClass: 'bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/20',
-        title: `Email (${lead.email})`,
+        title: `Email (${lead.email}): Open Mailbox`,
         iconSvg: ICONS.mail("w-3.5 h-3.5")
       } : null;
 
@@ -1673,16 +1915,42 @@
       document.getElementById('drawerDesignation').innerText = `(${lead.designation})`;
       document.getElementById('drawerLocation').innerText = lead.location;
       document.getElementById('drawerEmployees').innerText = lead.estimatedEmployees;
-      document.getElementById('drawerPitchText').innerText = lead.daftarHubFit;
       document.getElementById('drawerNotes').value = lead.notes || '';
 
-      const cleanWA = (lead.whatsapp || lead.phone || '').replace(/[^0-9]/g, '');
-      const locationCity = (lead.location || 'Pakistan').split(',')[0];
-      const waPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'}, noticed ${lead.companyName}'s work in ${locationCity}! We built DaftarHub to eliminate scattered spreadsheets for agency attendance, leaves, and sprint milestones. Would love to share a quick 2-min demo.`);
-      const emailPitch = encodeURIComponent(`Hi ${lead.decisionMakerName || 'there'},\n\nWe built DaftarHub specifically as an all-in-one operating system for Pakistani professional services and agencies.\n\nWould you be open to a quick 5-min demo this week?`);
+      const waUrl = buildWhatsAppUrl(lead);
+      const emailUrl = buildEmailUrl(lead);
 
-      document.getElementById('drawerWhatsAppBtn').href = cleanWA ? `https://wa.me/${cleanWA}?text=${waPitch}` : '#';
-      document.getElementById('drawerEmailBtn').href = lead.email ? `mailto:${lead.email}?subject=DaftarHub%20for%20${encodeURIComponent(lead.companyName)}&body=${emailPitch}` : '#';
+      const waBtn = document.getElementById('drawerWhatsAppBtn');
+      const emailBtn = document.getElementById('drawerEmailBtn');
+
+      if (waUrl) {
+        waBtn.href = waUrl;
+        waBtn.target = "daftarhub_whatsapp";
+        waBtn.setAttribute('onclick', "openNamedWindow(event, this.href, 'daftarhub_whatsapp')");
+        waBtn.classList.remove('opacity-40', 'pointer-events-none');
+      } else {
+        waBtn.href = "#";
+        waBtn.removeAttribute('onclick');
+        waBtn.classList.add('opacity-40', 'pointer-events-none');
+      }
+
+      if (emailUrl) {
+        emailBtn.href = emailUrl;
+        emailBtn.target = appSettings.emailProvider === 'mailto' ? '_self' : 'daftarhub_email';
+        emailBtn.setAttribute('onclick', `handleEmailClick(event, ${lead.rowIndex})`);
+        emailBtn.classList.remove('opacity-40', 'pointer-events-none');
+      } else {
+        emailBtn.href = "#";
+        emailBtn.removeAttribute('onclick');
+        emailBtn.classList.add('opacity-40', 'pointer-events-none');
+      }
+
+      const subjectText = buildEmailSubject(lead);
+      const messageText = buildOutreachMessage(lead);
+
+      document.getElementById('drawerEmailSubject').innerText = subjectText;
+      document.getElementById('drawerPitchText').innerText = messageText;
+      document.getElementById('drawerAgencyFit').innerText = lead.daftarHubFit || 'No custom notes.';
 
       const extraLinks = parseExtraLinks(lead.otherProfiles);
 
@@ -1690,7 +1958,7 @@
       const channelsGrid = document.getElementById('drawerChannelsGrid');
       channelsGrid.innerHTML = `
         <!-- WhatsApp -->
-        <a href="${cleanWA ? 'https://wa.me/' + cleanWA + '?text=' + waPitch : '#'}" target="_blank" class="p-2.5 rounded-xl border ${cleanWA ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20' : 'bg-zinc-900 border-white/[0.04] text-zinc-400 opacity-60 pointer-events-none'} flex items-center justify-between transition">
+        <a href="${waUrl || '#'}" ${waUrl ? 'target="daftarhub_whatsapp" onclick="openNamedWindow(event, this.href, \'daftarhub_whatsapp\')"' : ''} class="p-2.5 rounded-xl border ${waUrl ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20' : 'bg-zinc-900 border-white/[0.04] text-zinc-400 opacity-60 pointer-events-none'} flex items-center justify-between transition">
           <div class="flex items-center gap-2 overflow-hidden">
             <span class="text-emerald-400 shrink-0">${ICONS.whatsapp("w-4 h-4")}</span>
             <div class="overflow-hidden">
@@ -1702,7 +1970,7 @@
         </a>
 
         <!-- Email -->
-        <a href="${lead.email ? 'mailto:' + lead.email + '?subject=DaftarHub%20for%20' + encodeURIComponent(lead.companyName) + '&body=' + emailPitch : '#'}" target="_blank" class="p-2.5 rounded-xl border ${lead.email ? 'bg-sky-500/10 border-sky-500/30 text-sky-300 hover:bg-sky-500/20' : 'bg-zinc-900 border-white/[0.04] text-zinc-400 opacity-60 pointer-events-none'} flex items-center justify-between transition">
+        <a href="${emailUrl || '#'}" ${emailUrl ? `onclick="handleEmailClick(event, ${lead.rowIndex})"` : ''} class="p-2.5 rounded-xl border ${emailUrl ? 'bg-sky-500/10 border-sky-500/30 text-sky-300 hover:bg-sky-500/20' : 'bg-zinc-900 border-white/[0.04] text-zinc-400 opacity-60 pointer-events-none'} flex items-center justify-between transition">
           <div class="flex items-center gap-2 overflow-hidden">
             <span class="text-sky-400 shrink-0">${ICONS.mail("w-4 h-4")}</span>
             <div class="overflow-hidden">
@@ -1893,8 +2161,16 @@
 
     function copyPitchText() {
       if (!selectedLead) return;
-      navigator.clipboard.writeText(selectedLead.daftarHubFit);
-      showToast("Pitch copied to clipboard!");
+      const msg = buildOutreachMessage(selectedLead);
+      navigator.clipboard.writeText(msg);
+      showToast("Outreach message copied to clipboard!");
+    }
+
+    function copySubjectText() {
+      if (!selectedLead) return;
+      const sub = buildEmailSubject(selectedLead);
+      navigator.clipboard.writeText(sub);
+      showToast("Email subject copied to clipboard!");
     }
 
     function toggleCommandPalette() {
@@ -1999,14 +2275,104 @@
         });
     }
 
-    function openSettingsModal() { document.getElementById('settingsModal').classList.remove('hidden'); }
-    function closeSettingsModal() { document.getElementById('settingsModal').classList.add('hidden'); }
+    function switchSettingsTab(tab) {
+      const tabTemplates = document.getElementById('settingsTabTemplates');
+      const tabSync = document.getElementById('settingsTabSync');
+      const btnTemplates = document.getElementById('tabBtnTemplates');
+      const btnSync = document.getElementById('tabBtnSync');
+
+      if (!tabTemplates || !tabSync) return;
+
+      if (tab === 'sync') {
+        tabTemplates.classList.add('hidden');
+        tabSync.classList.remove('hidden');
+        btnSync.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm";
+        btnTemplates.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-zinc-400 hover:text-zinc-200";
+      } else {
+        tabTemplates.classList.remove('hidden');
+        tabSync.classList.add('hidden');
+        btnTemplates.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm";
+        btnSync.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-zinc-400 hover:text-zinc-200";
+      }
+    }
+
+    function openSettingsModal(tab = 'templates') {
+      const subjectInput = document.getElementById('emailSubjectInput');
+      const templateInput = document.getElementById('messageTemplateInput');
+      const greetingPrefInput = document.getElementById('greetingPrefInput');
+      const emailProviderInput = document.getElementById('emailProviderInput');
+      const urlInput = document.getElementById('webAppUrlInput');
+
+      if (subjectInput) subjectInput.value = appSettings.emailSubject;
+      if (templateInput) templateInput.value = appSettings.messageTemplate;
+      if (greetingPrefInput) greetingPrefInput.value = appSettings.greetingPreference;
+      if (emailProviderInput) emailProviderInput.value = appSettings.emailProvider;
+      if (urlInput && webAppUrl) urlInput.value = webAppUrl;
+
+      switchSettingsTab(tab);
+      document.getElementById('settingsModal').classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').classList.add('hidden');
+    }
+
+    function insertPlaceholder(elemId, tag) {
+      const el = document.getElementById(elemId);
+      if (!el) return;
+      const start = el.selectionStart || 0;
+      const end = el.selectionEnd || 0;
+      const val = el.value;
+      el.value = val.substring(0, start) + tag + val.substring(end);
+      el.focus();
+      el.selectionStart = el.selectionEnd = start + tag.length;
+    }
+
+    function resetTemplateDefaults() {
+      const subEl = document.getElementById('emailSubjectInput');
+      const msgEl = document.getElementById('messageTemplateInput');
+      const greetEl = document.getElementById('greetingPrefInput');
+      const provEl = document.getElementById('emailProviderInput');
+
+      if (subEl) subEl.value = DEFAULT_EMAIL_SUBJECT;
+      if (msgEl) msgEl.value = DEFAULT_MESSAGE_TEMPLATE;
+      if (greetEl) greetEl.value = 'person_fallback';
+      if (provEl) provEl.value = 'gmail';
+      showToast("Reset to default template copy");
+    }
+
     function saveSettings() {
-      const url = document.getElementById('webAppUrlInput').value.trim();
+      const subEl = document.getElementById('emailSubjectInput');
+      const msgEl = document.getElementById('messageTemplateInput');
+      const greetEl = document.getElementById('greetingPrefInput');
+      const provEl = document.getElementById('emailProviderInput');
+      const urlEl = document.getElementById('webAppUrlInput');
+
+      const subject = subEl ? subEl.value.trim() : '';
+      const template = msgEl ? msgEl.value.trim() : '';
+      const greetingPref = greetEl ? greetEl.value : 'person_fallback';
+      const provider = provEl ? provEl.value : 'gmail';
+      const url = urlEl ? urlEl.value.trim() : '';
+
+      appSettings.emailSubject = subject || DEFAULT_EMAIL_SUBJECT;
+      appSettings.messageTemplate = template || DEFAULT_MESSAGE_TEMPLATE;
+      appSettings.greetingPreference = greetingPref;
+      appSettings.emailProvider = provider;
       webAppUrl = url;
+
+      localStorage.setItem('daftarhub_email_subject', appSettings.emailSubject);
+      localStorage.setItem('daftarhub_msg_template', appSettings.messageTemplate);
+      localStorage.setItem('daftarhub_greeting_pref', appSettings.greetingPreference);
+      localStorage.setItem('daftarhub_email_provider', appSettings.emailProvider);
       localStorage.setItem('daftarhub_webapp_url', url);
+
       closeSettingsModal();
-      showToast("Settings saved!");
+      renderApp();
+      if (selectedLead) {
+        openDrawer(selectedLead.rowIndex);
+      }
+      showToast("Settings & Templates saved ✓");
       if (url) fetchSheetData();
     }
 
